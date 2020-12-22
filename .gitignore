@@ -1,2 +1,4 @@
 .D*
 cmake-build-debug
+.clang-format
+.idea
