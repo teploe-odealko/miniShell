@@ -12,13 +12,13 @@ typedef struct  s_elements
 /*
 ** Обработка ошибок происходит внутри функций
 */
-void    ft_echo(t_elements *elm, char **flags);
-void    ft_cd(t_elements *elm, char **flags);
-void    ft_pwd(t_elements *elm, char **flags);
-void    ft_export(t_elements *elm, char **flags);
-void    ft_unset(t_elements *elm, char **flags);
-void    ft_env(t_elements *elm, char **flags);
-void    ft_exit(t_elements *elm, char **flags);
+void    ft_echo(t_elements *elm, char **flags, int fd);
+void    ft_cd(t_elements *elm, char **flags, int fd);
+void    ft_pwd(t_elements *elm, char **flags, int fd);
+void    ft_export(t_elements *elm, char **flags, int fd);
+void    ft_unset(t_elements *elm, char **flags, int fd);
+void    ft_env(t_elements *elm, char **flags, int fd);
+void    ft_exit(t_elements *elm, char **flags, int fd);
 
 typedef struct		s_pair
 {
