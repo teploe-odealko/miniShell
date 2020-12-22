@@ -131,44 +131,98 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named shell
+# Target rules for targets named minishell
 
 # Build rule for target.
-shell: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 shell
-.PHONY : shell
+minishell: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 minishell
+.PHONY : minishell
 
 # fast build rule for target.
-shell/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/shell.dir/build.make CMakeFiles/shell.dir/build
-.PHONY : shell/fast
+minishell/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minishell.dir/build.make CMakeFiles/minishell.dir/build
+.PHONY : minishell/fast
 
-minishell.o: minishell.c.o
+srcs/errors_handler.o: srcs/errors_handler.c.o
 
-.PHONY : minishell.o
+.PHONY : srcs/errors_handler.o
 
 # target to build an object file
-minishell.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/shell.dir/build.make CMakeFiles/shell.dir/minishell.c.o
-.PHONY : minishell.c.o
+srcs/errors_handler.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minishell.dir/build.make CMakeFiles/minishell.dir/srcs/errors_handler.c.o
+.PHONY : srcs/errors_handler.c.o
 
-minishell.i: minishell.c.i
+srcs/errors_handler.i: srcs/errors_handler.c.i
 
-.PHONY : minishell.i
+.PHONY : srcs/errors_handler.i
 
 # target to preprocess a source file
-minishell.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/shell.dir/build.make CMakeFiles/shell.dir/minishell.c.i
-.PHONY : minishell.c.i
+srcs/errors_handler.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minishell.dir/build.make CMakeFiles/minishell.dir/srcs/errors_handler.c.i
+.PHONY : srcs/errors_handler.c.i
 
-minishell.s: minishell.c.s
+srcs/errors_handler.s: srcs/errors_handler.c.s
 
-.PHONY : minishell.s
+.PHONY : srcs/errors_handler.s
 
 # target to generate assembly for a file
-minishell.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/shell.dir/build.make CMakeFiles/shell.dir/minishell.c.s
-.PHONY : minishell.c.s
+srcs/errors_handler.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minishell.dir/build.make CMakeFiles/minishell.dir/srcs/errors_handler.c.s
+.PHONY : srcs/errors_handler.c.s
+
+srcs/minishell.o: srcs/minishell.c.o
+
+.PHONY : srcs/minishell.o
+
+# target to build an object file
+srcs/minishell.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minishell.dir/build.make CMakeFiles/minishell.dir/srcs/minishell.c.o
+.PHONY : srcs/minishell.c.o
+
+srcs/minishell.i: srcs/minishell.c.i
+
+.PHONY : srcs/minishell.i
+
+# target to preprocess a source file
+srcs/minishell.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minishell.dir/build.make CMakeFiles/minishell.dir/srcs/minishell.c.i
+.PHONY : srcs/minishell.c.i
+
+srcs/minishell.s: srcs/minishell.c.s
+
+.PHONY : srcs/minishell.s
+
+# target to generate assembly for a file
+srcs/minishell.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minishell.dir/build.make CMakeFiles/minishell.dir/srcs/minishell.c.s
+.PHONY : srcs/minishell.c.s
+
+srcs/parser.o: srcs/parser.c.o
+
+.PHONY : srcs/parser.o
+
+# target to build an object file
+srcs/parser.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minishell.dir/build.make CMakeFiles/minishell.dir/srcs/parser.c.o
+.PHONY : srcs/parser.c.o
+
+srcs/parser.i: srcs/parser.c.i
+
+.PHONY : srcs/parser.i
+
+# target to preprocess a source file
+srcs/parser.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minishell.dir/build.make CMakeFiles/minishell.dir/srcs/parser.c.i
+.PHONY : srcs/parser.c.i
+
+srcs/parser.s: srcs/parser.c.s
+
+.PHONY : srcs/parser.s
+
+# target to generate assembly for a file
+srcs/parser.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/minishell.dir/build.make CMakeFiles/minishell.dir/srcs/parser.c.s
+.PHONY : srcs/parser.c.s
 
 # Help Target
 help:
@@ -178,10 +232,16 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... shell"
-	@echo "... minishell.o"
-	@echo "... minishell.i"
-	@echo "... minishell.s"
+	@echo "... minishell"
+	@echo "... srcs/errors_handler.o"
+	@echo "... srcs/errors_handler.i"
+	@echo "... srcs/errors_handler.s"
+	@echo "... srcs/minishell.o"
+	@echo "... srcs/minishell.i"
+	@echo "... srcs/minishell.s"
+	@echo "... srcs/parser.o"
+	@echo "... srcs/parser.i"
+	@echo "... srcs/parser.s"
 .PHONY : help
 
 
