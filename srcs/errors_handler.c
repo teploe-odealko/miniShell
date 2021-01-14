@@ -11,4 +11,10 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "ft_printf.h"
 
+void	errors_handler(char *error_desc)
+{
+	ft_printf(error_desc);
+	exit(1);
+}

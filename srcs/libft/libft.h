@@ -14,16 +14,14 @@
 # define LIBFT_H
 # define BUFFER_SIZE 128
 
+# include <stddef.h>
+
 typedef struct		s_pair
 {
 	char 			*key;
 	char 			*value;
 	struct s_pair	*next;
 }					t_pair;
-
-# include <stddef.h>
-#include <minishell.h>
-# include "minishell.h"
 
 void				*ft_memset(void *b, int c, size_t len);
 void				ft_bzero(void *s, size_t n);
@@ -71,5 +69,7 @@ void				ft_lstiter(t_pair *lst, void (*f)(void *));
 t_pair				*ft_lstmap(t_pair *lst, void *(*f)(void *),
 													void (*del)(void *));
 int					get_next_line(int fd, char **line);
+int					ft_max(int a, int b);
+int					ft_streq(char *s1, char *s2);
 
 #endif

@@ -14,7 +14,7 @@
 #include "libft.h"
 #include <stdlib.h>
 
-int		ft_strdel(int fd, char **save)
+static int		ft_strdel(int fd, char **save)
 {
 	if (save[fd])
 	{
@@ -24,25 +24,7 @@ int		ft_strdel(int fd, char **save)
 	return (-1);
 }
 
-char	*ft_strdup(const char *s1)
-{
-	char	*str;
-	int		i;
-
-	i = 0;
-	str = (char *)malloc(sizeof(char) * (1 + ft_strlen(s1)));
-	if (!str)
-		return (NULL);
-	while (s1[i] != '\0')
-	{
-		str[i] = s1[i];
-		i++;
-	}
-	str[i] = '\0';
-	return (str);
-}
-
-int		get_oneline(int fd, char **line, char **save)
+static int		get_oneline(int fd, char **line, char **save)
 {
 	int		i;
 	char	*temp;

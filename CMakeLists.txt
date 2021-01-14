@@ -1,14 +1,80 @@
 cmake_minimum_required(VERSION 3.17)
-project(minishell C)
+project(shell C)
 
 set(CMAKE_C_STANDARD 11)
 
-set(HEADERS
-        includes/minishell.h)
+include_directories(includes)
+include_directories(srcs/libft)
+include_directories(srcs/printf/includes)
 
-add_executable(minishell
+add_executable(shell
+        includes/minishell.h
+        srcs/libft/ft_atoi.c
+        srcs/libft/ft_bzero.c
+        srcs/libft/ft_calloc.c
+        srcs/libft/ft_isalnum.c
+        srcs/libft/ft_isalpha.c
+        srcs/libft/ft_isascii.c
+        srcs/libft/ft_isdigit.c
+        srcs/libft/ft_isprint.c
+        srcs/libft/ft_itoa.c
+        srcs/libft/ft_lstadd_back.c
+        srcs/libft/ft_lstadd_front.c
+        srcs/libft/ft_lstclear.c
+        srcs/libft/ft_lstdelone.c
+        srcs/libft/ft_lstiter.c
+        srcs/libft/ft_lstlast.c
+        srcs/libft/ft_lstmap.c
+        srcs/libft/ft_lstnew.c
+        srcs/libft/ft_lstsize.c
+        srcs/libft/ft_memccpy.c
+        srcs/libft/ft_memchr.c
+        srcs/libft/ft_memcmp.c
+        srcs/libft/ft_memcpy.c
+        srcs/libft/ft_memmove.c
+        srcs/libft/ft_memset.c
+        srcs/libft/ft_putchar_fd.c
+        srcs/libft/ft_putendl_fd.c
+        srcs/libft/ft_putnbr_fd.c
+        srcs/libft/ft_putstr_fd.c
+        srcs/libft/ft_split.c
+        srcs/libft/ft_strchr.c
+        srcs/libft/ft_strdup.c
+        srcs/libft/ft_strjoin.c
+        srcs/libft/ft_strlcat.c
+        srcs/libft/ft_strlcpy.c
+        srcs/libft/ft_strlen.c
+        srcs/libft/ft_strmapi.c
+        srcs/libft/ft_strncmp.c
+        srcs/libft/ft_strnstr.c
+        srcs/libft/ft_strrchr.c
+        srcs/libft/ft_strtrim.c
+        srcs/libft/ft_substr.c
+        srcs/libft/ft_tolower.c
+        srcs/libft/ft_toupper.c
+        srcs/libft/get_next_line.c
+        srcs/libft/get_next_line_utils.c
+        srcs/libft/ft_streq.c
+        srcs/libft/ft_max.c
+        srcs/libft/libft.h
+        srcs/printf/includes/ft_printf.h
+        srcs/printf/includes/parser.h
+        srcs/printf/srcs/c_handler.c
+        srcs/printf/srcs/d_handler.c
+        srcs/printf/srcs/ft_printf.c
+        srcs/printf/srcs/p_handler.c
+        srcs/printf/srcs/parcer.c
+        srcs/printf/srcs/per_handler.c
+        srcs/printf/srcs/processor.c
+        srcs/printf/srcs/s_handler.c
+        srcs/printf/srcs/u_handler.c
+        srcs/printf/srcs/utils.c
+        srcs/printf/srcs/utils2.c
+        srcs/printf/srcs/x_handler.c
+        srcs/printf/srcs/xcap_handler.c
+        srcs/dictionary.c
+        srcs/errors_handler.c
         srcs/minishell.c
         srcs/parser.c
-        srcs/errors_handler.c)
-
-include_directories(includes)
+        srcs/envs.c
+        )
