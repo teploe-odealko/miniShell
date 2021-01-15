@@ -1,20 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors_handler.c                                   :+:      :+:    :+:   */
+/*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptycho <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: bashleig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/21 20:05:02 by ptycho            #+#    #+#             */
-/*   Updated: 2020/12/21 20:05:17 by ptycho           ###   ########.fr       */
+/*   Created: 2020/11/15 14:08:15 by bashleig          #+#    #+#             */
+/*   Updated: 2020/11/18 20:38:57 by bashleig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "ft_printf.h"
+#ifndef PARSER_H
+# define PARSER_H
 
-void	errors_handler(char *error_desc)
-{
-	ft_printf("%s\n", error_desc);
-	exit(1);
-}
+typedef	struct		s_pars{
+	int				minus;
+	int				zero;
+	int				wid;
+	int				prec;
+	char			type;
+}					t_par;
+t_par				*pparser(char **format, va_list *args);
+t_par				*struct_creator();
+
+#endif
