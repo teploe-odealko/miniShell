@@ -24,7 +24,7 @@ t_dict	*set_env_to_dict(char **envs)
 	while(envs && *envs)
 	{
 		parse_and_add(dict, *envs);
-		(*envs)++;
+		(envs)++;
 	}
 	return (dict);
 }

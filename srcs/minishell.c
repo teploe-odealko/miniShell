@@ -26,5 +26,6 @@ int main(int argc, char **argv, char **envs)
 //	}
 
 	dict = set_env_to_dict(envs);
-	printf("%s - %s", dict->pair->key, dict->pair->value);
+	printf("%s - %s", "PWD", dict->get_value_by_key(dict, "PWD"));
+
 }
