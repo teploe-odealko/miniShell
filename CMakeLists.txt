@@ -79,4 +79,5 @@ add_executable(shell
         srcs/envs.c
         srcs/ft_cd.c
         srcs/ft_pwd.c
+        srcs/ft_env.c
         )

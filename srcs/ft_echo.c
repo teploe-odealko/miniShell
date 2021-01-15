@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptycho <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/15 13:02:00 by ptycho            #+#    #+#             */
-/*   Updated: 2021/01/15 13:02:00 by ptycho           ###   ########.fr       */
+/*   Created: 2021/01/15 20:48:00 by ptycho            #+#    #+#             */
+/*   Updated: 2021/01/15 20:48:00 by ptycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <unistd.h>
 
-void    ft_pwd(t_dict *dict, char **flags, int fd)
+void    ft_echo(t_dict *dict, char **flags, int fd)
 {
-	char pwd[4096];
+	int len;
 
-	if (flags)
-		NULL;
-	getcwd(pwd, 4096);
-	//pwd = get_value_by_key(dict, "PWD");
-	write(fd, pwd, ft_strlen(pwd));
-	write(fd, "\n", 1);
+	len = ft_strlen(flags[0]);
+	write(fd, flags[0], len);
 }

@@ -35,8 +35,8 @@ void 	switcher(char **command, char **envs)
 //		ft_export(dict, command + 1, 1);
 //	else if (ft_streq(command[0], "unset"))
 //		ft_unset(dict, command + 1, 1);
-//	else if (ft_streq(command[0], "env"))
-//		ft_env(dict, command + 1, 1);
+	else if (ft_streq(command[0], "env"))
+		ft_env(dict, command + 1, 1);
 //	else if (ft_streq(command[0], "exit"))
 //		ft_exit(dict, command + 1, 1);
 	else
@@ -65,14 +65,4 @@ int main(int argc, char **argv, char **envs)
 		switcher(command, envs);
 		free(line);
 	}
-
-//	printf("%s - %s", "PWD", dict->get_value_by_key(dict, "PWD"));
-//	printf("%s - %s\n", "PWD", dict->get_value_by_key(dict, "PWD"));
-//	printf("%s - %s\n", "OLDPWD", dict->get_value_by_key(dict, "OLDPWD"));
-	//ft_pwd(dict, NULL, 1);
-//	ft_pwd(dict, NULL, 1);
-//	ft_cd(dict, &flags, 1);
-//	printf("%s - %s\n", "PWD", dict->get_value_by_key(dict, "PWD"));
-//	printf("%s - %s\n", "OLDPWD", dict->get_value_by_key(dict, "OLDPWD"));
-
 }
