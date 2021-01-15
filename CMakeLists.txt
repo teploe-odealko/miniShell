@@ -62,4 +62,6 @@ add_executable(shell
         srcs/minishell.c
         srcs/parser.c
         srcs/envs.c
+        srcs/ft_pwd.c
+        srcs/ft_cd.c
         )

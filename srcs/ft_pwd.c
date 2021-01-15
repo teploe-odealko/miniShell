@@ -11,8 +11,15 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <unistd.h>
 
-void    ft_pwd(t_elements *elm, char **flags, int fd)
+void    ft_pwd(t_dict *dict, char **flags, int fd)
 {
+	char *pwd;
 
+	if (flags)
+		NULL;
+	pwd = get_value_by_key(dict, "PWD");
+	write(fd, pwd, ft_strlen(pwd));
+	write(fd, "\n", 1);
 }

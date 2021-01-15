@@ -10,7 +10,8 @@
 
 int main(int argc, char **argv, char **envs)
 {
-	t_dict *dict;
+	t_dict	*dict;
+	char	*flags = {"CMakeFiles//"};
 //	char	*line;
 //	char	**command;
 //	int		pid;
@@ -26,6 +27,11 @@ int main(int argc, char **argv, char **envs)
 
 	dict = set_env_to_dict(envs);
 	printf("%s - %s\n", "PWD", dict->get_value_by_key(dict, "PWD"));
-	printf("%s - %s\n", "SHELL", dict->get_value_by_key(dict, "SHELL"));
+	printf("%s - %s\n", "OLDPWD", dict->get_value_by_key(dict, "OLDPWD"));
+	//ft_pwd(dict, NULL, 1);
+	ft_pwd(dict, NULL, 1);
+	ft_cd(dict, &flags, 1);
+	printf("%s - %s\n", "PWD", dict->get_value_by_key(dict, "PWD"));
+	printf("%s - %s\n", "OLDPWD", dict->get_value_by_key(dict, "OLDPWD"));
 
 }

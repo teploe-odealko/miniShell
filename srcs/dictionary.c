@@ -28,6 +28,23 @@ char			*get_value_by_key(struct s_dict *self, char *key)
 	return (NULL);
 }
 
+void			set_value_by_key(struct s_dict *self, char *key, char *value)
+{
+	t_pair *tmp;
+
+	tmp = self->pair;
+	while (tmp)
+	{
+		if (ft_streq(tmp->key, key))
+		{
+			free(tmp->value);
+			tmp->value = value;
+			return ;
+		}
+		tmp = tmp->next;
+	}
+}
+
 t_dict			*new_dict()
 {
 	t_dict	*dict;
