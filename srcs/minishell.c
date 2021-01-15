@@ -51,18 +51,97 @@ void 	switcher(char **command, char **envs)
 }
 
 
+
+//void	command_decomp(char *line)
+//{
+//	while (*line)
+//	{
+//		if (*line == '\"')
+//		{
+//
+//		}
+//		line++;
+//	}
+//}
+//
+//char *replace_vars(char *s)
+//{
+//	char	**res;
+//
+//	while(s)
+//	{
+//		if (*s == '\'')
+//		{
+//
+//		}
+//		s++;
+//	}
+//}
+
+char	*cutstr(char *line, int i, int j)
+{
+	char	*res;
+
+	res = malloc(sizeof(char) * (ft_strlen(line) - (j - i) + 1));
+	ft_strlcpy(res, line, i + 1);
+	ft_strlcat(res, line + j, (ft_strlen(line) - (j - i) + 1));
+	return (res);
+}
+
+t_pair	*parenthesis_handler(char **line)
+{
+	int		i;
+	int		j;
+	t_pair	*prths;
+	char	*tmp;
+
+	i = 0;
+	prths = NULL;
+	while ((*line)[i])
+	{
+		j = i;
+		if ((*line)[i] == '\"')
+		{
+			j++;
+			while ((*line)[j] != '\"')
+				j++;
+			ft_lstadd_back(&prths, ft_lstnew(ft_substr(*line, i + 1, j - i - 1), NULL));
+			tmp = (*line);
+			(*line) = cutstr((*line), i, j);
+			free(tmp);
+		}
+		else if ((*line)[i] == '\'')
+		{
+			j++;
+			while ((*line)[j] != '\'')
+				j++;
+			ft_lstadd_back(&prths, ft_lstnew(ft_substr(*line, i + 1, j - i - 1), NULL));
+			tmp = (*line);
+			(*line) = cutstr((*line), i, j);
+			free(tmp);
+		}
+		i++;
+	}
+	return (prths);
+}
+
+
 int main(int argc, char **argv, char **envs)
 {
-
+	t_pair 	*prths;
 	char	*line;
-	char	**command;
+	char	**commands;
 
 	while (1)
 	{
 		ft_printf("minishell$ ");
 		get_next_line(0, &line);
-		command = ft_split(line, ' ');
-		switcher(command, envs);
+//		commands = ft_split(line, ' ');
+
+		prths = parenthesis_handler(&line);
+		ft_printf("%s\n", line);
+//		command_decomp(commands);
+//		switcher(commands, envs);
 		free(line);
 	}
 
