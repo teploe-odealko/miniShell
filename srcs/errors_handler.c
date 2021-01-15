@@ -15,6 +15,6 @@
 
 void	errors_handler(char *error_desc)
 {
-	ft_printf(error_desc);
+	ft_printf("%s\n", error_desc);
 	exit(1);
 }
