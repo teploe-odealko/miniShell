@@ -9,14 +9,6 @@ typedef struct	s_elements
 
 }				t_elements;
 
-void    ft_echo(t_elements *elm, char **flags, int fd);
-void    ft_cd(t_elements *elm, char **flags, int fd);
-void    ft_pwd(t_elements *elm, char **flags, int fd);
-void    ft_export(t_elements *elm, char **flags, int fd);
-void    ft_unset(t_elements *elm, char **flags, int fd);
-void    ft_env(t_elements *elm, char **flags, int fd);
-void    ft_exit(t_elements *elm, char **flags, int fd);
-
 typedef struct		s_dict
 {
 	char			*(*get_value_by_key)(struct s_dict *self, char *key);
@@ -25,6 +17,14 @@ typedef struct		s_dict
 	void 			(*remove_key)(struct s_dict *self, char *key);
 	t_pair			*pair;
 }					t_dict;
+
+void    ft_echo(t_dict *dict, char **flags, int fd);
+void    ft_cd(t_dict *dict, char **flags, int fd);
+void    ft_pwd(t_dict *dict, char **flags, int fd);
+void    ft_export(t_dict *dict, char **flags, int fd);
+void    ft_unset(t_dict *dict, char **flags, int fd);
+void    ft_env(t_dict *dict, char **flags, int fd);
+void    ft_exit(t_dict *dict, char **flags, int fd);
 
 char			*get_value_by_key(struct s_dict *self, char *key);
 void			set_value_by_key(struct s_dict *self, char *key, char *value);
