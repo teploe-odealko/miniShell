@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors_handler.c                                   :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptycho <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/21 20:05:02 by ptycho            #+#    #+#             */
-/*   Updated: 2020/12/21 20:05:17 by ptycho           ###   ########.fr       */
+/*   Created: 2021/01/15 13:02:00 by ptycho            #+#    #+#             */
+/*   Updated: 2021/01/15 13:02:00 by ptycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	errors_handler(char *error_desc)
+void    ft_pwd(t_elements *elm, char **flags, int fd)
 {
-//	ft_printf(error_desc);
-	exit(1);
+
 }

@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include "ft_printf.h"
 #include <unistd.h>
 #include <stdio.h>
 
@@ -26,6 +25,7 @@ int main(int argc, char **argv, char **envs)
 //	}
 
 	dict = set_env_to_dict(envs);
-	printf("%s - %s", "PWD", dict->get_value_by_key(dict, "PWD"));
+	printf("%s - %s\n", "PWD", dict->get_value_by_key(dict, "PWD"));
+	printf("%s - %s\n", "SHELL", dict->get_value_by_key(dict, "SHELL"));
 
 }
