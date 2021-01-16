@@ -5,11 +5,10 @@
 #include "string.h"
 #include "errno.h"
 
-void 	switcher(char **command, char **envs)
+void 	switcher(char **command, t_dict *dict, char **envs)
 {
 	pid_t	pid;
 	int		child_exit_stat;
-	t_dict *dict;
 	char	*flags = {"CMakeFiles//"};
 //	char	*line;
 //	char	**command;
@@ -24,17 +23,16 @@ void 	switcher(char **command, char **envs)
 //		free(line);
 //	}
 
-	dict = set_env_to_dict(envs);
 //	if (ft_streq(command[0], "echo"))
 //		ft_echo(dict, command + 1, 1);
 	if (ft_streq(command[0], "cd"))
 		ft_cd(dict, command + 1, 1);
 	else if (ft_streq(command[0], "pwd"))
 		ft_pwd(dict, command + 1, 1);
-//	else if (ft_streq(command[0], "export"))
-//		ft_export(dict, command + 1, 1);
-//	else if (ft_streq(command[0], "unset"))
-//		ft_unset(dict, command + 1, 1);
+	else if (ft_streq(command[0], "export"))
+		ft_export(dict, command + 1, 1);
+	else if (ft_streq(command[0], "unset"))
+		ft_unset(dict, command + 1, 1);
 	else if (ft_streq(command[0], "env"))
 		ft_env(dict, command + 1, 1);
 //	else if (ft_streq(command[0], "exit"))
@@ -53,16 +51,25 @@ void 	switcher(char **command, char **envs)
 
 int main(int argc, char **argv, char **envs)
 {
-
 	char	*line;
 	char	**command;
+	t_dict	*dict;
+	int		i;
 
+	dict = set_env_to_dict(envs);
 	while (1)
 	{
 		ft_printf("minishell$ ");
 		get_next_line(0, &line);
 		command = ft_split(line, ' ');
-		switcher(command, envs);
+		switcher(command, dict, envs);
+		i = 0;
+		while (command[i])
+		{
+			free(command[i]);
+			i++;
+		}
+		free(command);
 		free(line);
 	}
 }

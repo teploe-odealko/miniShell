@@ -35,4 +35,6 @@ t_dict			*new_dict();
 void			errors_handler(char *error_desc);
 t_dict			*set_env_to_dict(char **envs);
 
+void			ft_list_remove_if(t_pair **begin_list, void *key_ref, int (*cmp)());
+
 #endif

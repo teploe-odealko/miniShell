@@ -45,6 +45,14 @@ void			set_value_by_key(struct s_dict *self, char *key, char *value)
 	}
 }
 
+void 			remove_key(struct s_dict *self, char *key)
+{
+	t_pair *tmp;
+
+	tmp = self->pair;
+	ft_list_remove_if(&tmp, key, &ft_streq);
+}
+
 t_dict			*new_dict()
 {
 	t_dict	*dict;

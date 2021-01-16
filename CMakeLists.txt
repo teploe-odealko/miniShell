@@ -80,4 +80,7 @@ add_executable(shell
         srcs/ft_cd.c
         srcs/ft_pwd.c
         srcs/ft_env.c
+        srcs/ft_list_remove_if.c
+        srcs/ft_unset.c
+        srcs/ft_export.c
         )

@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptycho <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/15 13:02:00 by ptycho            #+#    #+#             */
-/*   Updated: 2021/01/15 13:02:00 by ptycho           ###   ########.fr       */
+/*   Created: 2021/01/16 13:43:00 by ptycho            #+#    #+#             */
+/*   Updated: 2021/01/16 13:43:00 by ptycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <unistd.h>
 
-void    ft_pwd(t_dict *dict, char **flags, int fd)
+void    ft_unset(t_dict *dict, char **flags, int fd)
 {
-	char	*pwd;
-	if (flags && dict)
-		NULL;
+	int i;
 
-	pwd = getcwd(NULL, 2048);
-	write(fd, pwd, ft_strlen(pwd));
-	write(fd, "\n", 1);
-	free(pwd);
+	i = 0;
+	while (flags && flags[i])
+	{
+		remove_key(dict, flags[i]);
+		i++;
+	}
 }

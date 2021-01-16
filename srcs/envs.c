@@ -1,6 +1,7 @@
 #include "minishell.h"
 #include "string.h"
 #include "errno.h"
+
 static	void	parse_and_add(t_dict *dict, char *env)
 {
 	int		i;

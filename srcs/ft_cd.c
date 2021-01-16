@@ -12,40 +12,48 @@
 
 #include "minishell.h"
 #include <unistd.h>
+#include "string.h"
+#include "errno.h"
 
 void    ft_cd(t_dict *dict, char **flags, int fd)
 {
-	char	pwd[4096];
-	int 	len;
+	char	pwd[2048];
+	char	*tmp;
 
-	getcwd(pwd, 4096);
-	len = ft_strlen(flags[0]);
+	getcwd(pwd, 2048);
 	if (!chdir(flags[0]))
 	{
-		if (!get_value_by_key(dict, "OLDWPD"))
-			add_new_key(dict, "OLDPWD", pwd);
+		if (!get_value_by_key(dict, "OLDPWD"))
+			add_new_key(dict, "OLDPWD", ft_substr(pwd, 0, ft_strlen(pwd)));
 		else
-			set_value_by_key(dict, "OLDPWD", pwd);
-		set_value_by_key(dict, "PWD", flags[0]);
+			set_value_by_key(dict, "OLDPWD", ft_substr(pwd, 0, ft_strlen(pwd)));
+		tmp = getcwd(NULL, 4096);
+		set_value_by_key(dict, "PWD", ft_substr(tmp, 0, ft_strlen(tmp)));
+		free(tmp);
 	}
 	else
 	{
 		if (!flags[0] || (flags[0] && flags[0][0] == '~'))
 		{
 			if (!chdir(get_value_by_key(dict, "HOME"))) {
-				if (!get_value_by_key(dict, "OLDWPD"))
-					add_new_key(dict, "OLDPWD", pwd);
+				if (!get_value_by_key(dict, "OLDPWD"))
+					add_new_key(dict, "OLDPWD", ft_substr(pwd, 0, ft_strlen(pwd)));
 				else
-					set_value_by_key(dict, "OLDPWD", pwd);
+					set_value_by_key(dict, "OLDPWD", ft_substr(pwd, 0, ft_strlen(pwd)));
+				tmp = getcwd(NULL, 4096);
+				set_value_by_key(dict, "PWD", ft_substr(tmp, 0, ft_strlen(tmp)));
+				free(tmp);
 			}
 			else
 				write(fd, "HOME not set\n", 13);
 		}
 		else
 		{
-			write(fd, "cd: no such file or directory: ", 31);
-			write(fd, flags[0], len);
-			write(fd, "\n", 1);
+			ft_putstr_fd("cd: ", fd);
+			ft_putstr_fd(strerror(errno), fd);
+			ft_putstr_fd(": ", fd);
+			ft_putstr_fd(flags[0], fd);
+			ft_putstr_fd("\n", fd);
 		}
 	}
 }
