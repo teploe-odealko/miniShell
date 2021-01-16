@@ -1,9 +1,4 @@
 #include "minishell.h"
-#include "ft_printf.h"
-#include <unistd.h>
-#include <stdio.h>
-#include "string.h"
-#include "errno.h"
 
 void 	switcher(char **command, char **envs)
 {
@@ -50,17 +45,119 @@ void 	switcher(char **command, char **envs)
 			waitpid(pid, &child_exit_stat, 0);
 }
 
+int		array2dlen(char **array2d)
+{
+	int	len;
 
+	len = 0;
+	while (array2d[len])
+		len++;
+	return (len);
+}
 
-//void	command_decomp(char *line)
+//int		is_redirect_append(char *command)
 //{
-//	while (*line)
+////	char *append_redirect;
+//
+//	while (!(command = ft_strnstr(command, ">>", ft_strlen(command))))
 //	{
-//		if (*line == '\"')
+//		command += 2;
+//		while (*command)
+//			if (*command == '')
+//	}
+//	return (0);
+//}
+
+// danger! split
+
+char	*insert_char_to_str(char *str, char *c, int i)
+{
+	char	*res;
+	int		strlen;
+
+	strlen = ft_strlen(str);
+	res = malloc(sizeof(char) * (strlen + 2));
+	ft_bzero(res, (strlen + 2));
+	ft_strlcpy(res, str, i + 1);
+	ft_strlcat(res, c, strlen + 2);
+	ft_strlcat(res, str + i, strlen + 2);
+	free(str);
+	return (res);
+}
+
+char	*add_spaces(char *command)
+{
+	int		i;
+
+	i = 0;
+	while (command[i])
+	{
+		if (command[i] == '<' || command[i] == '>' || command[i] == '|')
+		{
+			if (i > 0 && command[i - 1] != ' ')
+			{
+				command = insert_char_to_str(command, " ", i);
+				i++;
+			}
+			if (command[i + 1] != ' ')
+			{
+				command = insert_char_to_str(command, " ", i + 1);
+				i++;
+			}
+		}
+		i++;
+	}
+	return (command);
+}
+
+void	command_decomp(char *command)
+{
+	char	**command_split;
+	int		fd;
+	command_split = ft_split(command, ' ');
+	while (*command_split)
+	{
+		if (ft_streq(*command_split, ">"))
+		{
+			command_split++;
+			if (ft_streq(*command_split, ">"))
+			{
+				command_split++;
+				fd = open(*command_split, O_WRONLY | O_CREAT);
+			}
+			else
+			{
+				fd = open(*command_split, O_WRONLY | O_CREAT | O_TRUNC);
+			}
+		}
+		command_split++;
+	}
+}
+////	char	**redirect;
+//	int		i;
+//
+//	i = (int)ft_strlen(command) - 1;
+//	while (command[i])
+//	{
+//		if (ft_strncmp(&command[i], ">>", 2) == 0)
 //		{
 //
 //		}
-//		line++;
+//	}
+////	if ()
+////	redirect = ft_split(command, '>');
+//	if (array2dlen(redirect) >= 2)
+//	{
+//
+//	}
+//	ft_printf("%s\n", command);
+//	while (*command)
+//	{
+//		if (*command == '>')
+//		{
+//
+//		}
+//		command++;
 //	}
 //}
 //
@@ -131,6 +228,7 @@ int main(int argc, char **argv, char **envs)
 	t_pair 	*prths;
 	char	*line;
 	char	**commands;
+//	char	**command;
 
 	while (1)
 	{
@@ -139,7 +237,15 @@ int main(int argc, char **argv, char **envs)
 //		commands = ft_split(line, ' ');
 
 		prths = parenthesis_handler(&line);
-		ft_printf("%s\n", line);
+		commands = ft_split(line, ';');
+		while (*commands != NULL)
+		{
+			*commands = add_spaces(*commands);
+			ft_printf("%s\n", *commands);
+			command_decomp(*commands);
+			commands++;
+		}
+//		ft_printf("%s\n", line);
 //		command_decomp(commands);
 //		switcher(commands, envs);
 		free(line);
