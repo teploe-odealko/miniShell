@@ -13,7 +13,7 @@
 #include "minishell.h"
 #include <unistd.h>
 
-void    ft_unset(t_dict *dict, char **flags, int fd)
+void    ft_unset(t_dict *dict, char **flags)
 {
 	int i;
 

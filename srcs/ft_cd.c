@@ -15,7 +15,7 @@
 #include "string.h"
 #include "errno.h"
 
-void    ft_cd(t_dict *dict, char **flags, int fd)
+void    ft_cd(t_dict *dict, char **flags)
 {
 	char	pwd[2048];
 	char	*tmp;
@@ -45,15 +45,15 @@ void    ft_cd(t_dict *dict, char **flags, int fd)
 				free(tmp);
 			}
 			else
-				write(fd, "HOME not set\n", 13);
+				write(1, "HOME not set\n", 13);
 		}
 		else
 		{
-			ft_putstr_fd("cd: ", fd);
-			ft_putstr_fd(strerror(errno), fd);
-			ft_putstr_fd(": ", fd);
-			ft_putstr_fd(flags[0], fd);
-			ft_putstr_fd("\n", fd);
+			ft_putstr_fd("cd: ", 1);
+			ft_putstr_fd(strerror(errno), 1);
+			ft_putstr_fd(": ", 1);
+			ft_putstr_fd(flags[0], 1);
+			ft_putstr_fd("\n", 1);
 		}
 	}
 }

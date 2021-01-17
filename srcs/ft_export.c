@@ -13,7 +13,7 @@
 #include "minishell.h"
 #include <unistd.h>
 
-void    ft_export(t_dict *dict, char **flags, int fd)
+void    ft_export(t_dict *dict, char **flags)
 {
 	int		i;
 	char	*tmp;
@@ -42,8 +42,8 @@ void    ft_export(t_dict *dict, char **flags, int fd)
 	}
 	else
 	{
-		ft_putstr_fd("export: `", fd);
-		ft_putstr_fd(flags[0], fd);
-		ft_putstr_fd("': not a valid identifier\n", fd);
+		ft_putstr_fd("export: `", 1);
+		ft_putstr_fd(flags[0], 1);
+		ft_putstr_fd("': not a valid identifier\n", 1);
 	}
 }

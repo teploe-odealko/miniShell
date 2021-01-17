@@ -13,10 +13,10 @@
 #include "minishell.h"
 #include <unistd.h>
 
-void    ft_echo(t_dict *dict, char **flags, int fd)
+void    ft_echo(t_dict *dict, char **flags)
 {
 	int len;
 
 	len = ft_strlen(flags[0]);
-	write(fd, flags[0], len);
+	write(1, flags[0], len);
 }

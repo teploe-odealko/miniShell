@@ -13,14 +13,14 @@
 #include "minishell.h"
 #include <unistd.h>
 
-void    ft_pwd(t_dict *dict, char **flags, int fd)
+void    ft_pwd(t_dict *dict, char **flags)
 {
 	char	*pwd;
 	if (flags && dict)
 		NULL;
 
 	pwd = getcwd(NULL, 2048);
-	write(fd, pwd, ft_strlen(pwd));
-	write(fd, "\n", 1);
+	write(1, pwd, ft_strlen(pwd));
+	write(1, "\n", 1);
 	free(pwd);
 }

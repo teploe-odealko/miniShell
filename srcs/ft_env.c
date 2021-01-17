@@ -28,7 +28,7 @@ void	print_key_and_value(struct s_dict *self, int fd)
 	}
 }
 
-void    ft_env(t_dict *dict, char **flags, int fd)
+void    ft_env(t_dict *dict)
 {
-	print_key_and_value(dict, fd);
+	print_key_and_value(dict, 1);
 }

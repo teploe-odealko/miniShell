@@ -54,15 +54,15 @@ void 	switcher(char **command, char **envs, t_dict *dict)
 //	if (ft_streq(command[0], "echo"))
 //		ft_echo(dict, command + 1, 1);
 	if (ft_streq(command[0], "cd"))
-		ft_cd(dict, command + 1, 1);
+		ft_cd(dict, command + 1);
 	else if (ft_streq(command[0], "pwd"))
-		ft_pwd(dict, command + 1, 1);
-//	else if (ft_streq(command[0], "export"))
-//		ft_export(dict, command + 1, 1);
-//	else if (ft_streq(command[0], "unset"))
-//		ft_unset(dict, command + 1, 1);
-//	else if (ft_streq(command[0], "env"))
-//		ft_env(dict, command + 1, 1);
+		ft_pwd(dict, command + 1);
+	else if (ft_streq(command[0], "export"))
+		ft_export(dict, command + 1);
+	else if (ft_streq(command[0], "unset"))
+		ft_unset(dict, command + 1);
+	else if (ft_streq(command[0], "env"))
+		ft_env(dict);
 //	else if (ft_streq(command[0], "exit"))
 //		ft_exit(dict, command + 1, 1);
 	else
@@ -304,7 +304,6 @@ int main(int argc, char **argv, char **envs)
 
 		prths = parenthesis_handler(&line);
 		commands = ft_split(line, ';');
-		dict = set_env_to_dict(envs);
 		while (*commands != NULL)
 		{
 //			*commands = add_spaces(*commands);
