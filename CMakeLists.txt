@@ -80,3 +80,5 @@ add_executable(shell
         srcs/ft_cd.c
         srcs/ft_pwd.c
         )
+
+target_compile_options(shell PRIVATE -Wall -Wextra -Werror)

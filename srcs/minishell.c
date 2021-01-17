@@ -1,12 +1,56 @@
 #include "minishell.h"
 
-void 	switcher(char **command, char **envs)
+void	free_2darray(char **array)
+{
+	int		i;
+
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
+
+void 	exec_other(char **command, char **envs, t_dict *dict)
 {
 	pid_t	pid;
-	int		child_exit_stat;
-	t_dict *dict;
+	char	**path;
+	char 	*tmp;
+	char	*full_command;
+	int		i;
 
-	dict = set_env_to_dict(envs);
+	i = 0;
+	if ((pid = fork()) == 0)
+	{
+		execve(command[0], command, envs);
+		path = ft_split(dict->get_value_by_key(dict, "PATH"), ':');
+		while (path[i])
+		{
+			tmp = ft_strjoin(path[i], "/");
+//			printf("PATH - %s\n", path[i]);
+			full_command = ft_strjoin(tmp, command[0]);
+			execve(full_command, command, envs);
+			free(full_command);
+			free(tmp);
+			i++;
+		}
+		free_2darray(path);
+//		if (exec_res == -1)
+		errors_handler("Command not found\n");
+		exit(0);
+	}
+	else if (pid > 0)
+		waitpid(pid, NULL, 0);
+}
+
+void 	switcher(char **command, char **envs, t_dict *dict)
+{
+
+//	t_dict *dict;
+//
+//	dict = set_env_to_dict(envs);
 //	if (ft_streq(command[0], "echo"))
 //		ft_echo(dict, command + 1, 1);
 	if (ft_streq(command[0], "cd"))
@@ -22,14 +66,7 @@ void 	switcher(char **command, char **envs)
 //	else if (ft_streq(command[0], "exit"))
 //		ft_exit(dict, command + 1, 1);
 	else
-		if ((pid = fork()) == 0)
-		{
-			if (execve(command[0], command, envs) == -1)
-				errors_handler(strerror(errno));
-			exit(0);
-		}
-		else if (pid > 0)
-			waitpid(pid, &child_exit_stat, 0);
+		exec_other(command, envs, dict);
 }
 
 int		array2dlen(char **array2d)
@@ -41,21 +78,6 @@ int		array2dlen(char **array2d)
 		len++;
 	return (len);
 }
-
-//int		is_redirect_append(char *command)
-//{
-////	char *append_redirect;
-//
-//	while (!(command = ft_strnstr(command, ">>", ft_strlen(command))))
-//	{
-//		command += 2;
-//		while (*command)
-//			if (*command == '')
-//	}
-//	return (0);
-//}
-
-// danger! split
 
 char	*insert_char_to_str(char *str, char *c, int i)
 {
@@ -113,7 +135,7 @@ void	trim(char **str)
 		i++;
 	}
 	tmp = *str;
-	*str = malloc(sizeof(char) * (strlen(str) - counter + 1));
+	*str = malloc(sizeof(char) * (strlen(*str) - counter + 1));
 	i = 0;
 	j = 0;
 	while (tmp[i])
@@ -183,7 +205,7 @@ int 	cut_off_redirect(char **command, int i)
 	return (fd);
 }
 
-void	command_decomp(char *command, char **envs)
+void	command_decomp(char *command, char **envs, t_dict *dict)
 {
 	char	**command_split;
 	int		fd;
@@ -192,66 +214,29 @@ void	command_decomp(char *command, char **envs)
 
 	i = 0;
 	saved_fd = -1;
-//	command_split = ft_split(command, ' ');
+	saved_fd = dup(STDOUT_FILENO);
 	while (command[i])
 	{
 		if (command[i] == '>')
 		{
 			fd = cut_off_redirect(&command, i);
-			saved_fd = dup(STDOUT_FILENO);
 			dup2(fd, STDOUT_FILENO);
 			close(fd);
 		}
 		i++;
 	}
 	command_split = ft_split(command, ' '); // need to free
-	switcher(command_split, envs);
+	switcher(command_split, envs, dict);
 	if (saved_fd != -1)
 	{
 		dup2(saved_fd, STDOUT_FILENO);
 		close(saved_fd);
 	}
 }
-////	char	**redirect;
-//	int		i;
-//
-//	i = (int)ft_strlen(command) - 1;
-//	while (command[i])
-//	{
-//		if (ft_strncmp(&command[i], ">>", 2) == 0)
-//		{
-//
-//		}
-//	}
-////	if ()
-////	redirect = ft_split(command, '>');
-//	if (array2dlen(redirect) >= 2)
-//	{
-//
-//	}
-//	ft_printf("%s\n", command);
-//	while (*command)
-//	{
-//		if (*command == '>')
-//		{
-//
-//		}
-//		command++;
-//	}
-//}
-//
+
 //char *replace_vars(char *s)
 //{
-//	char	**res;
-//
-//	while(s)
-//	{
-//		if (*s == '\'')
-//		{
-//
-//		}
-//		s++;
-//	}
+
 //}
 
 char	*cutstr(char *line, int i, int j)
@@ -307,8 +292,10 @@ int main(int argc, char **argv, char **envs)
 	t_pair 	*prths;
 	char	*line;
 	char	**commands;
-//	char	**command;
+	t_dict	*dict;
 
+	if (argc && argv) {}
+	dict = set_env_to_dict(envs);
 	while (1)
 	{
 		ft_printf("minishell$ ");
@@ -317,11 +304,12 @@ int main(int argc, char **argv, char **envs)
 
 		prths = parenthesis_handler(&line);
 		commands = ft_split(line, ';');
+		dict = set_env_to_dict(envs);
 		while (*commands != NULL)
 		{
 //			*commands = add_spaces(*commands);
 //			ft_printf("%s\n", *commands);
-			command_decomp(*commands, envs);
+			command_decomp(*commands, envs, dict);
 			commands++;
 		}
 //		ft_printf("%s\n", line);

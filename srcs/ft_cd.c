@@ -16,7 +16,7 @@
 void    ft_cd(t_dict *dict, char **flags, int fd)
 {
 	char	*pwd;
-	char	*oldpwd;
+//	char	*oldpwd;
 	int 	len;
 
 	len = ft_strlen(flags[0]);

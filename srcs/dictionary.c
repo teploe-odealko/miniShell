@@ -9,9 +9,11 @@ void			add_new_key(struct s_dict *self, char *key, char *value)
 	t_pair *new_pair;
 
 	if (self && key && value)
+	{
 		if (!(new_pair = ft_lstnew(key, value)))
 			errors_handler(strerror(errno));
 		ft_lstadd_back(&self->pair, new_pair);
+	}
 }
 
 char			*get_value_by_key(struct s_dict *self, char *key)
