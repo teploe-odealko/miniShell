@@ -29,7 +29,7 @@ int		parse_prec(char **format, va_list *args)
 		}
 		else if ((**format >= '0' && **format <= '9') || **format == '-')
 		{
-			param = ft_atoi(format);
+			param = ft_moving_atoi(format);
 			if (param < 0)
 				param = -1;
 		}
@@ -53,7 +53,7 @@ int		parse_width(char **format, va_list *args, t_par *par)
 		(*format)++;
 	}
 	else if (**format >= '0' && **format <= '9')
-		param = ft_atoi(format);
+		param = ft_moving_atoi(format);
 	return (param);
 }
 
