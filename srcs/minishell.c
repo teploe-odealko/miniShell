@@ -38,7 +38,7 @@ void 	exec_other(char **command, char **envs, t_dict *dict)
 		}
 		free_2darray(path);
 //		if (exec_res == -1)
-		errors_handler("Command not found\n");
+		errors_handler("Command not found");
 		exit(0);
 	}
 	else if (pid > 0)
@@ -144,6 +144,7 @@ void	trim(char **str)
 			(*str)[j++] = tmp[i];
 		i++;
 	}
+	(*str)[j++] = '\0';
 	free(tmp);
 }
 
@@ -151,18 +152,25 @@ char	*cut_off_word(char **str, int start, int finish)
 {
 	char	*res;
 	char	*tmp;
+	char	*tmp2;
 	int		cutted_len;
 //	res = malloc(sizeof(char) * (finish - start + 2));
-	cutted_len = (int)ft_strlen(*str) - (finish - start + 1);
-	res = ft_substr(*str, start, finish - start + 1);
+	cutted_len = (int)ft_strlen(*str) - (finish - start) + 1;
+	res = ft_substr(*str, start, finish - start);
+//	res[finish - start] = '\0';
 	tmp = *str;
 	*str = malloc(sizeof(char) * cutted_len);
-	ft_bzero(*str, ft_strlen(*str));
+	ft_bzero(*str, cutted_len);
 	ft_strlcat(*str, tmp, start);
 	ft_strlcat(*str, tmp + finish + 1, cutted_len);
 	free(tmp);
-	trim(&res);
-	return (res);
+	tmp = ft_strtrim(res, " >");
+//	trim(&res);
+	tmp2 = *str;
+	*str = ft_strtrim(tmp2, " >");
+	free(tmp2);
+	free(res);
+	return (tmp);
 }
 
 int		index_before_spec_char(char *str)
@@ -192,7 +200,7 @@ int 	cut_off_redirect(char **command, int i)
 	{
 		j++;
 		filename = cut_off_word(command, j, j + index_before_spec_char(&((*command)[j])));
-		fd = open(filename, O_WRONLY | O_CREAT, 0777); // if -1 returns
+		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0777); // if -1 returns
 		free(filename);
 	}
 	else
@@ -315,9 +323,6 @@ int main(int argc, char **argv, char **envs)
 			i++;
 		}
 		free(commands);
-//		ft_printf("%s\n", line);
-//		command_decomp(commands);
-//		switcher(commands, envs);
 		free(line);
 	}
 
