@@ -293,24 +293,28 @@ int main(int argc, char **argv, char **envs)
 	char	*line;
 	char	**commands;
 	t_dict	*dict;
+	int		i;
 
 	if (argc && argv) {}
 	dict = set_env_to_dict(envs);
 	while (1)
 	{
-		ft_printf("minishell$ ");
+		ft_printf("minishell-1.1$ ");
 		get_next_line(0, &line);
 //		commands = ft_split(line, ' ');
 
 		prths = parenthesis_handler(&line);
 		commands = ft_split(line, ';');
-		while (*commands != NULL)
+		i = 0;
+		while (commands[i] != NULL)
+			command_decomp(commands[i++], envs, dict);
+		i = 0;
+		while (commands[i])
 		{
-//			*commands = add_spaces(*commands);
-//			ft_printf("%s\n", *commands);
-			command_decomp(*commands, envs, dict);
-			commands++;
+			free(commands[i]);
+			i++;
 		}
+		free(commands);
 //		ft_printf("%s\n", line);
 //		command_decomp(commands);
 //		switcher(commands, envs);
