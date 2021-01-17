@@ -23,7 +23,7 @@ void    ft_export(t_dict *dict, char **flags, int fd)
 	{
 		NULL;
 	}
-	else if (flags[0][0] == '-' || (flags[0][0] >= 65 && flags[0][0] <= 90) ||
+	else if (flags[0][0] == '_' || (flags[0][0] >= 65 && flags[0][0] <= 90) ||
 	(flags[0][0] >= 97 && flags[0][0] <= 122))
 	{
 		while (flags[0][i] && flags[0][i] != '=')
@@ -37,6 +37,7 @@ void    ft_export(t_dict *dict, char **flags, int fd)
 		{
 			set_value_by_key(dict, tmp, ft_substr(flags[0] + i + 1, 0,
 												  ft_strlen(flags[0] + i + 1)));
+			free(tmp);
 		}
 	}
 	else
