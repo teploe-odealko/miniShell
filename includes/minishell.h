@@ -2,6 +2,12 @@
 # define MINISHELL_H
 # include <stdlib.h>
 # include "libft.h"
+# include <fcntl.h>
+#include "ft_printf.h"
+#include <unistd.h>
+#include <stdio.h>
+#include "string.h"
+#include "errno.h"
 
 typedef struct	s_elements
 {

@@ -84,3 +84,5 @@ add_executable(shell
         srcs/ft_unset.c
         srcs/ft_export.c
         )
+
+target_compile_options(shell PRIVATE -Wall -Wextra -Werror)

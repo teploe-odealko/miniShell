@@ -15,6 +15,7 @@
 # define BUFFER_SIZE 128
 
 # include <stddef.h>
+# include "stdlib.h"
 
 typedef struct		s_pair
 {
