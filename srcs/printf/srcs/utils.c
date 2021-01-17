@@ -12,6 +12,28 @@
 
 #include "ft_printf.h"
 
+int		ft_moving_atoi(char **str)
+{
+	int		sign;
+	long	res;
+
+	sign = 1;
+	res = 0;
+	while (*(*str) == ' ' || *(*str) == '\t' || *(*str) == '\n' ||
+		   *(*str) == '\r' || *(*str) == '\v' || *(*str) == '\f')
+		(*str)++;
+	if (*(*str) == '-')
+		sign = -1;
+	if (*(*str) == '-' || *(*str) == '+')
+		(*str)++;
+	while (*(*str) >= '0' && *(*str) <= '9')
+	{
+		res = res * 10 + *(*str) - '0';
+		(*str)++;
+	}
+	return (sign * res);
+}
+
 void	ft_putchar(char c)
 {
 	extern int g_putcount;

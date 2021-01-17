@@ -35,5 +35,6 @@ int		absnumlen(long long nb, int base);
 int		maxint(int a, int b);
 int		minint(int a, int b);
 void	ft_putnbr(long n, int base);
+int		ft_moving_atoi(char **str);
 
 #endif
