@@ -5,19 +5,6 @@ void 	switcher(char **command, char **envs)
 	pid_t	pid;
 	int		child_exit_stat;
 	t_dict *dict;
-	char	*flags = {"CMakeFiles//"};
-//	char	*line;
-//	char	**command;
-//	int		pid;
-
-//	while (1)
-//	{
-//		get_next_line(0, &line);
-//		command = ft_split(line, ' ');
-//		if (execve(command[0], command, envp) == -1)
-//			errors_handler("Could not execve");
-//		free(line);
-//	}
 
 	dict = set_env_to_dict(envs);
 //	if (ft_streq(command[0], "echo"))
@@ -110,27 +97,119 @@ char	*add_spaces(char *command)
 	return (command);
 }
 
-void	command_decomp(char *command)
+void	trim(char **str)
+{
+	int		counter;
+	int		i;
+	char	*tmp;
+	int		j;
+
+	counter = 0;
+	i = 0;
+	while ((*str)[i])
+	{
+		if ((*str)[i] == ' ')
+			counter++;
+		i++;
+	}
+	tmp = *str;
+	*str = malloc(sizeof(char) * (strlen(str) - counter + 1));
+	i = 0;
+	j = 0;
+	while (tmp[i])
+	{
+		if (tmp[i] != ' ')
+			(*str)[j++] = tmp[i];
+		i++;
+	}
+	free(tmp);
+}
+
+char	*cut_off_word(char **str, int start, int finish)
+{
+	char	*res;
+	char	*tmp;
+	int		cutted_len;
+//	res = malloc(sizeof(char) * (finish - start + 2));
+	cutted_len = (int)ft_strlen(*str) - (finish - start + 1);
+	res = ft_substr(*str, start, finish - start + 1);
+	tmp = *str;
+	*str = malloc(sizeof(char) * cutted_len);
+	ft_bzero(*str, ft_strlen(*str));
+	ft_strlcat(*str, tmp, start);
+	ft_strlcat(*str, tmp + finish + 1, cutted_len);
+	free(tmp);
+	trim(&res);
+	return (res);
+}
+
+int		index_before_spec_char(char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str[i] == ' ')
+		i++;
+	while (str[i])
+	{
+		if (str[i] == '>' || str[i] == '<' || str[i] == '|' || str[i] == ' ')
+			return (i - 1);
+		i++;
+	}
+	return (i);
+}
+
+int 	cut_off_redirect(char **command, int i)
+{
+	int		j;
+	int		fd;
+	char	*filename;
+
+	j = i + 1;
+	if ((*command)[j] == '>')
+	{
+		j++;
+		filename = cut_off_word(command, j, j + index_before_spec_char(&((*command)[j])));
+		fd = open(filename, O_WRONLY | O_CREAT, 0777); // if -1 returns
+		free(filename);
+	}
+	else
+	{
+		filename = cut_off_word(command, j, j + index_before_spec_char(&((*command)[j])));
+		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	}
+//	if (fd < 0)
+//		errors_handler(strerror(errno));
+	return (fd);
+}
+
+void	command_decomp(char *command, char **envs)
 {
 	char	**command_split;
 	int		fd;
-	command_split = ft_split(command, ' ');
-	while (*command_split)
+	int		i;
+	int		saved_fd;
+
+	i = 0;
+	saved_fd = -1;
+//	command_split = ft_split(command, ' ');
+	while (command[i])
 	{
-		if (ft_streq(*command_split, ">"))
+		if (command[i] == '>')
 		{
-			command_split++;
-			if (ft_streq(*command_split, ">"))
-			{
-				command_split++;
-				fd = open(*command_split, O_WRONLY | O_CREAT);
-			}
-			else
-			{
-				fd = open(*command_split, O_WRONLY | O_CREAT | O_TRUNC);
-			}
+			fd = cut_off_redirect(&command, i);
+			saved_fd = dup(STDOUT_FILENO);
+			dup2(fd, STDOUT_FILENO);
+			close(fd);
 		}
-		command_split++;
+		i++;
+	}
+	command_split = ft_split(command, ' '); // need to free
+	switcher(command_split, envs);
+	if (saved_fd != -1)
+	{
+		dup2(saved_fd, STDOUT_FILENO);
+		close(saved_fd);
 	}
 }
 ////	char	**redirect;
@@ -240,9 +319,9 @@ int main(int argc, char **argv, char **envs)
 		commands = ft_split(line, ';');
 		while (*commands != NULL)
 		{
-			*commands = add_spaces(*commands);
-			ft_printf("%s\n", *commands);
-			command_decomp(*commands);
+//			*commands = add_spaces(*commands);
+//			ft_printf("%s\n", *commands);
+			command_decomp(*commands, envs);
 			commands++;
 		}
 //		ft_printf("%s\n", line);
