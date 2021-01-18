@@ -155,8 +155,9 @@ char	*cut_off_word(char **str, int start, int finish)
 	char	*tmp2;
 	int		cutted_len;
 //	res = malloc(sizeof(char) * (finish - start + 2));
+
 	cutted_len = (int)ft_strlen(*str) - (finish - start) + 1;
-	res = ft_substr(*str, start, finish - start);
+	res = ft_substr(*str, start, finish - start + 1);
 //	res[finish - start] = '\0';
 	tmp = *str;
 	*str = malloc(sizeof(char) * cutted_len);
@@ -213,7 +214,7 @@ int 	cut_off_redirect(char **command, int i)
 	return (fd);
 }
 
-void	command_decomp(char *command, char **envs, t_dict *dict)
+void	command_decomp(char **command, char **envs, t_dict *dict)
 {
 	char	**command_split;
 	int		fd;
@@ -223,23 +224,27 @@ void	command_decomp(char *command, char **envs, t_dict *dict)
 	i = 0;
 	saved_fd = -1;
 	saved_fd = dup(STDOUT_FILENO);
-	while (command[i])
+	while ((*command)[i])
 	{
-		if (command[i] == '>')
+		if ((*command)[i] == '>')
 		{
-			fd = cut_off_redirect(&command, i);
+			fd = cut_off_redirect(command, i);
 			dup2(fd, STDOUT_FILENO);
 			close(fd);
 		}
 		i++;
 	}
-	command_split = ft_split(command, ' '); // need to free
+	command_split = ft_split(*command, ' '); // need to free
 	switcher(command_split, envs, dict);
 	if (saved_fd != -1)
 	{
 		dup2(saved_fd, STDOUT_FILENO);
 		close(saved_fd);
 	}
+	i = 0;
+	while (command_split[i])
+		free(command_split[i++]);
+	free(command_split);
 }
 
 //char *replace_vars(char *s)
@@ -309,13 +314,11 @@ int main(int argc, char **argv, char **envs)
 	{
 		ft_printf("minishell-1.1$ ");
 		get_next_line(0, &line);
-//		commands = ft_split(line, ' ');
-
 		prths = parenthesis_handler(&line);
 		commands = ft_split(line, ';');
 		i = 0;
 		while (commands[i] != NULL)
-			command_decomp(commands[i++], envs, dict);
+			command_decomp(&commands[i++], envs, dict);
 		i = 0;
 		while (commands[i])
 		{
@@ -325,14 +328,4 @@ int main(int argc, char **argv, char **envs)
 		free(commands);
 		free(line);
 	}
-
-//	printf("%s - %s", "PWD", dict->get_value_by_key(dict, "PWD"));
-//	printf("%s - %s\n", "PWD", dict->get_value_by_key(dict, "PWD"));
-//	printf("%s - %s\n", "OLDPWD", dict->get_value_by_key(dict, "OLDPWD"));
-	//ft_pwd(dict, NULL, 1);
-//	ft_pwd(dict, NULL, 1);
-//	ft_cd(dict, &flags, 1);
-//	printf("%s - %s\n", "PWD", dict->get_value_by_key(dict, "PWD"));
-//	printf("%s - %s\n", "OLDPWD", dict->get_value_by_key(dict, "OLDPWD"));
-
 }
