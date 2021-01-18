@@ -38,7 +38,7 @@ void 	bubble_sort(char **env, int len)
 	i = 0;
 	while (i < len - 1)
 	{
-		if (ft_strncmp(env[i], env[i + 1], ft_min(lofk(env[i]), lofk(env[i + 1]))) > 0)
+		if (env && env[i] && ft_strncmp(env[i], env[i + 1], ft_min(lofk(env[i]), lofk(env[i + 1]))) > 0)
 		{
 			tmp = env[i];
 			env[i] = env[i + 1];
@@ -66,11 +66,10 @@ void    ft_export(t_dict *dict, char **flags)
 	if (!*flags)
 	{
 		len = ft_lstsize(pair);
-		env = (char **)malloc(sizeof(char *) * (len + 1));
-		env[len] = NULL;
-		while (i < len)
+		env = (char **)malloc(sizeof(char *) * len);
+		while (pair && i < len)
 		{
-			if (pair->value[0] == '\0')
+			if (pair->value && pair->value[0] == '\0')
 				env[i] = ft_substr(pair->key, 0, ft_strlen(pair->key));
 			else
 			{
@@ -96,7 +95,7 @@ void    ft_export(t_dict *dict, char **flags)
 		}
 	}
 	else
-		while (flags[j])
+		while (flags && flags[j])
 		{
 			if (flags[j][0] == '_' || (flags[j][0] >= 65 && flags[j][0] <= 90) ||
 					 (flags[j][0] >= 97 && flags[j][0] <= 122)) {

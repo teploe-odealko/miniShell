@@ -21,7 +21,7 @@ char			*get_value_by_key(struct s_dict *self, char *key)
 	t_pair *tmp;
 
 	tmp = self->pair;
-	while (tmp)
+	while (tmp && tmp->key)
 	{
 		if (ft_streq(tmp->key, key))
 			return (tmp->value);
@@ -35,7 +35,7 @@ void			set_value_by_key(struct s_dict *self, char *key, char *value)
 	t_pair *tmp;
 
 	tmp = self->pair;
-	while (tmp)
+	while (tmp && tmp->key)
 	{
 		if (ft_streq(tmp->key, key))
 		{

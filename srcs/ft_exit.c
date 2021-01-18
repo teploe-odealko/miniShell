@@ -26,7 +26,7 @@ int 	ft_is_numeric(char *flags)
 	len = ft_strlen(flags);
 	if (len > 20)
 		return (0);
-	while (flags[i])
+	while (flags && flags[i])
 	{
 		if (!(ft_isdigit(flags[i]) || flags[0] == '-' || flags[0] == '+'))
 			return (0);
@@ -40,7 +40,6 @@ int 	ft_is_numeric(char *flags)
 		if (!ft_streq(ft_itoa(alp), flags))
 			return (0);
 	}
-	free(flags);
 	return (1);
 }
 
@@ -73,7 +72,7 @@ void    ft_exit(char **flags)
 		ft_putstr_fd("bash: exit: too many arguments\n", 1);
 		errno = 1;
 	}
-	else if (flags[0] && ft_is_numeric(ft_strtrim(flags[0], " ")) == 0)
+	else if (flags[0] && ft_is_numeric(flags[0]) == 0)
 	{
 		ft_putstr_fd("bash: exit: ", 1);
 		ft_putstr_fd(flags[0], 1);
@@ -82,7 +81,9 @@ void    ft_exit(char **flags)
 	}
 	else
 	{
-		alp = ft_atoi(flags[0]);
+		alp = 0;
+		if (flags[0] != NULL)
+			alp = ft_atoi(flags[0]);
 		exit((unsigned char)alp);
 	}
 }
