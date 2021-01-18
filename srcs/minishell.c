@@ -270,12 +270,22 @@ void	prths_back(char **command, t_pair *prths, int i)
 	ft_strlcat(*command, tmp + i + 1, ft_strlen(tmp) + ft_strlen(prths->key));
 }
 
+void	del_front(t_pair **pair)
+{
+	t_pair	*tmp;
+	tmp = *pair;
+	*pair = (*pair)->next;
+	free(tmp->key);
+	free(tmp);
+}
+
 void	command_decomp(char **command, char **envs, t_dict *dict, t_pair *prths)
 {
 	char	**command_split;
 	int		fd;
 	int		i;
 	int		saved_fd;
+	int		j;
 
 	i = 0;
 	saved_fd = -1;
@@ -289,14 +299,35 @@ void	command_decomp(char **command, char **envs, t_dict *dict, t_pair *prths)
 			close(fd);
 			continue;
 		}
-		else if ((*command)[i] == '"')
+
+		i++;
+	}
+	i = 0;
+	command_split = ft_split(*command, ' '); // need to free
+	while (command_split[i])
+	{
+		j = 0;
+		while (command_split[i][j])
 		{
-			replace_vars(&prths->key, dict);
-			prths_back(command, prths, i);
+			if (command_split[i][j] == '"')
+			{
+				replace_vars(&prths->key, dict);
+				prths_back(&(command_split[i]), prths, j);
+				j += ft_strlen(prths->key);
+				del_front(&prths);
+				continue ;
+			}
+			else if (command_split[i][j] == '\'')
+			{
+				prths_back(&(command_split[i]), prths, j);
+				j += ft_strlen(prths->key);
+				del_front(&prths);
+				continue ;
+			}
+			j++;
 		}
 		i++;
 	}
-	command_split = ft_split(*command, ' '); // need to free
 	switcher(command_split, envs, dict);
 	if (saved_fd != -1)
 	{
@@ -339,8 +370,10 @@ t_pair	*parenthesis_handler(char **line)
 		if ((*line)[i] == '\"')
 		{
 			j++;
-			while ((*line)[j] != '\"')
+			while ((*line)[j] && (*line)[j] != '\"')
 				j++;
+			if (!(*line)[j])
+				return (NULL);
 			ft_lstadd_back(&prths, ft_lstnew(ft_substr(*line, i + 1, j - i - 1), NULL));
 			tmp = (*line);
 			(*line) = cutstr((*line), i, j);
@@ -349,8 +382,10 @@ t_pair	*parenthesis_handler(char **line)
 		else if ((*line)[i] == '\'')
 		{
 			j++;
-			while ((*line)[j] != '\'')
+			while ((*line)[j] && (*line)[j] != '\'')
 				j++;
+			if (!(*line)[j])
+				return (NULL);
 			ft_lstadd_back(&prths, ft_lstnew(ft_substr(*line, i + 1, j - i - 1), NULL));
 			tmp = (*line);
 			(*line) = cutstr((*line), i, j);
@@ -376,7 +411,16 @@ int main(int argc, char **argv, char **envs)
 	{
 		ft_printf("minishell-1.1$ ");
 		get_next_line(0, &line);
-		prths = parenthesis_handler(&line);
+		prths = NULL;
+		if (ft_strrchr(line, '"') || ft_strrchr(line, '\''))
+		{
+			prths = parenthesis_handler(&line);
+			if (!prths)
+			{
+				errors_handler("Syntax error");
+				continue ;
+			}
+		}
 		commands = ft_split(line, ';');
 		i = 0;
 		while (commands[i] != NULL)
