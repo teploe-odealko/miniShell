@@ -168,7 +168,7 @@ char	*cut_off_word(char **str, int start, int finish)
 	tmp = ft_strtrim(res, " >");
 //	trim(&res);
 	tmp2 = *str;
-	*str = ft_strtrim(tmp2, " >");
+	*str = ft_strtrim(tmp2, " >$");
 	free(tmp2);
 	free(res);
 	return (tmp);
@@ -214,7 +214,63 @@ int 	cut_off_redirect(char **command, int i)
 	return (fd);
 }
 
-void	command_decomp(char **command, char **envs, t_dict *dict)
+//void	replace_char_by_str(char *dst, char c, char *str)
+//{
+//
+//}
+
+void	replace_vars(char **str, t_dict *dict)
+{
+	char	*tmp;
+	int		i;
+	int		len;
+	char	*key;
+	char	*value;
+
+	i = 0;
+//	trim(str);
+	while ((*str)[i])
+	{
+		if ((*str)[i] == '$')
+		{
+			tmp = ft_strdup(*str);
+			key = cut_off_word(str, i + 1, i + 1 + index_before_spec_char(&((*str)[i + 1])));
+			value = dict->get_value_by_key(dict, key);
+			// some $var
+			len = (int)(ft_strlen(tmp) - ft_strlen(key) + ft_strlen(value));
+			*str = malloc(sizeof(char) * len);
+			ft_bzero(*str, len);
+			ft_strlcat(*str, tmp, i + 1);
+			ft_strlcat(*str, value, len);
+			ft_strlcat(*str, tmp + i + ft_strlen(key) + 1, len);
+			free(tmp);
+			free(key);
+			i += ft_strlen(key);
+			continue ;
+		}
+		i++;
+	}
+}
+
+//void	replace_double_par(t_dict *dict, char **command, t_pair *parths, int i)
+//{
+//	char	*tmp;
+//
+//
+//}
+void	prths_back(char **command, t_pair *prths, int i)
+{
+	char	*tmp;
+
+	tmp = *command;
+	*command = malloc(sizeof(char) * (ft_strlen(*command) + ft_strlen(prths->key)));
+	ft_bzero(*command, strlen(tmp));
+	ft_strlcat(*command, tmp, i + 1);
+	ft_strlcat(*command, prths->key, ft_strlen(tmp) + ft_strlen(prths->key));
+	ft_strlcat(*command, tmp + i + 1, ft_strlen(tmp) + ft_strlen(prths->key));
+}
+
+void	command_decomp(char **command, char **envs, t_dict *dict, t_pair *prths)
 {
 	char	**command_split;
 	int		fd;
@@ -231,6 +287,12 @@ void	command_decomp(char **command, char **envs, t_dict *dict)
 			fd = cut_off_redirect(command, i);
 			dup2(fd, STDOUT_FILENO);
 			close(fd);
+			continue;
+		}
+		else if ((*command)[i] == '"')
+		{
+			replace_vars(&prths->key, dict);
+			prths_back(command, prths, i);
 		}
 		i++;
 	}
@@ -318,7 +380,12 @@ int main(int argc, char **argv, char **envs)
 		commands = ft_split(line, ';');
 		i = 0;
 		while (commands[i] != NULL)
-			command_decomp(&commands[i++], envs, dict);
+		{
+			replace_vars(&(commands[i]), dict);
+			command_decomp(&commands[i++], envs, dict, prths);
+//			ft_printf("%s\n", commands[i]);
+//			i++;
+		}
 		i = 0;
 		while (commands[i])
 		{
