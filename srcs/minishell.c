@@ -51,9 +51,9 @@ void 	switcher(char **command, char **envs, t_dict *dict)
 //	t_dict *dict;
 //
 //	dict = set_env_to_dict(envs);
-//	if (ft_streq(command[0], "echo"))
-//		ft_echo(dict, command + 1, 1);
-	if (ft_streq(command[0], "cd"))
+	if (ft_streq(command[0], "echo"))
+		ft_echo(command + 1);
+	else if (ft_streq(command[0], "cd"))
 		ft_cd(dict, command + 1);
 	else if (ft_streq(command[0], "pwd"))
 		ft_pwd(dict, command + 1);
@@ -63,8 +63,8 @@ void 	switcher(char **command, char **envs, t_dict *dict)
 		ft_unset(dict, command + 1);
 	else if (ft_streq(command[0], "env"))
 		ft_env(dict);
-//	else if (ft_streq(command[0], "exit"))
-//		ft_exit(dict, command + 1, 1);
+	else if (ft_streq(command[0], "exit"))
+		ft_exit(command + 1);
 	else
 		exec_other(command, envs, dict);
 }

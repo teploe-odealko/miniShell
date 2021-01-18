@@ -39,7 +39,7 @@ char				*ft_strnstr(const char *haystack, const char *needle,
 char				*ft_strchr(const char *str, int ch);
 char				*ft_strrchr(const char *str, int ch);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
-int					ft_atoi(const char *str);
+long long			ft_atoi(const char *str);
 int					ft_isalpha(int ch);
 int					ft_isdigit(int ch);
 int					ft_isalnum(int ch);
@@ -51,7 +51,7 @@ char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s1, char const *set);
 char				**ft_split(char const *s, char c);
-char				*ft_itoa(int n);
+char				*ft_itoa(long long n);
 void				*ft_calloc(size_t count, size_t size);
 char				*ft_strdup(const char *s1);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));

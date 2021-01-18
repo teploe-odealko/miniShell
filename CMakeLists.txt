@@ -77,12 +77,14 @@ add_executable(shell
         srcs/minishell.c
         srcs/parser.c
         srcs/envs.c
+        srcs/ft_echo.c
         srcs/ft_cd.c
         srcs/ft_pwd.c
         srcs/ft_env.c
         srcs/ft_list_remove_if.c
         srcs/ft_unset.c
         srcs/ft_export.c
+        srcs/ft_exit.c
         )
 
 target_compile_options(shell PRIVATE -Wall -Wextra -Werror)

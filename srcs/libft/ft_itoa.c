@@ -13,9 +13,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-char	*ft_from(char *str, int n, int len)
+char	*ft_from(char *str, long long n, int len)
 {
-	int	m;
+	long long	m;
 
 	m = n;
 	if (n < 0)
@@ -47,11 +47,11 @@ char	*ft_itoa_special(char *str, char *tra)
 	return (str);
 }
 
-char	*ft_itoa(int n)
+char	*ft_itoa(long long n)
 {
-	int		m;
-	int		len;
-	char	*str;
+	long long		m;
+	int				len;
+	char			*str;
 
 	m = n;
 	len = 0;
@@ -65,8 +65,8 @@ char	*ft_itoa(int n)
 	str = (char*)malloc(sizeof(char) * (len + 1));
 	if (!str)
 		return (NULL);
-	if (n == -2147483648)
-		str = ft_itoa_special(str, "-2147483648");
+	if (n == (-9223372036854775807 - 1))
+		str = ft_itoa_special(str, "-9223372036854775808");
 	else
 	{
 		str = ft_from(str, n, len);

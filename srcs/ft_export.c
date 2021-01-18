@@ -53,12 +53,14 @@ void 	bubble_sort(char **env, int len)
 void    ft_export(t_dict *dict, char **flags)
 {
 	int		i;
+	int		j;
 	int 	len;
 	char	*tmp;
 	char 	**env;
 	char 	*tmpr;
 	t_pair	*pair;
 
+	j = 0;
 	i = 0;
 	pair = dict->pair;
 	if (!*flags)
@@ -93,27 +95,31 @@ void    ft_export(t_dict *dict, char **flags)
 			i++;
 		}
 	}
-	else if (flags[0][0] == '_' || (flags[0][0] >= 65 && flags[0][0] <= 90) ||
-	(flags[0][0] >= 97 && flags[0][0] <= 122))
-	{
-		while (flags[0][i] && flags[0][i] != '=')
-			i++;
-		tmp = ft_substr(flags[0], 0, i);
-		if (!get_value_by_key(dict, tmp))
-			add_new_key(dict, tmp,
-			  ft_substr(flags[0] + i + 1, 0,
-			   ft_strlen(flags[0] + i + 1)));
-		else
-		{
-			set_value_by_key(dict, tmp, ft_substr(flags[0] + i + 1, 0,
-												  ft_strlen(flags[0] + i + 1)));
-			free(tmp);
-		}
-	}
 	else
-	{
-		ft_putstr_fd("export: `", 1);
-		ft_putstr_fd(flags[0], 1);
-		ft_putstr_fd("': not a valid identifier\n", 1);
-	}
+		while (flags[j])
+		{
+			if (flags[j][0] == '_' || (flags[j][0] >= 65 && flags[j][0] <= 90) ||
+					 (flags[j][0] >= 97 && flags[j][0] <= 122)) {
+				while (flags[j][i] && flags[j][i] != '=')
+					i++;
+				tmp = ft_substr(flags[j], 0, i);
+				if (!get_value_by_key(dict, tmp))
+					add_new_key(dict, tmp,
+								ft_substr(flags[j] + i + 1, 0,
+										  ft_strlen(flags[j] + i + 1)));
+				else
+				{
+					set_value_by_key(dict, tmp, ft_substr(flags[j] + i + 1, 0,
+														  ft_strlen(flags[j] + i + 1)));
+					free(tmp);
+				}
+			}
+			else
+			{
+				ft_putstr_fd("export: `", 1);
+				ft_putstr_fd(flags[j], 1);
+				ft_putstr_fd("': not a valid identifier\n", 1);
+			}
+			j++;
+		}
 }

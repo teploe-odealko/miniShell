@@ -24,13 +24,13 @@ typedef struct		s_dict
 	t_pair			*pair;
 }					t_dict;
 
-void    ft_echo(t_dict *dict, char **flags);
+void    ft_echo(char **flags);
 void    ft_cd(t_dict *dict, char **flags);
 void    ft_pwd(t_dict *dict, char **flags);
 void    ft_export(t_dict *dict, char **flags);
 void    ft_unset(t_dict *dict, char **flags);
 void    ft_env(t_dict *dict);
-void    ft_exit(t_dict *dict, char **flags);
+void    ft_exit(char **flags);
 
 char			*get_value_by_key(struct s_dict *self, char *key);
 void			set_value_by_key(struct s_dict *self, char *key, char *value);
