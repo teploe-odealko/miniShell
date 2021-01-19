@@ -15,6 +15,39 @@ void	free_2darray(char **array)
 	free(array);
 }
 
+char 	**from_dict(t_dict *dict)
+{
+	t_pair	*pair;
+	int		len;
+	char	**env;
+	int 	i;
+	char 	*tmp;
+	char	*tmpr;
+
+	i = 0;
+	pair = dict->pair;
+	len = ft_lstsize(pair);
+	env = (char **)malloc(sizeof(char *) * len);
+	while (pair && i < len)
+	{
+		if (pair->key && pair->value && pair->value[0] == '\0')
+			env[i] = ft_substr(pair->key, 0, ft_strlen(pair->key));
+		else if (pair->key)
+		{
+			tmp = ft_strjoin(pair->key, "=");
+			tmpr = ft_strjoin(tmp, "\"");
+			free(tmp);
+			tmp = ft_strjoin(tmpr, pair->value);
+			free(tmpr);
+			env[i] = ft_strjoin(tmp, "\"");
+			free(tmp);
+		}
+		i++;
+		pair = pair->next;
+	}
+	return (env);
+}
+
 void 	exec_other(char **command, char **envs, t_dict *dict)
 {
 	pid_t	pid;
@@ -22,18 +55,21 @@ void 	exec_other(char **command, char **envs, t_dict *dict)
 	char 	*tmp;
 	char	*full_command;
 	int		i;
+	char 	**env;
 
+	(void)envs;
+	env = from_dict(dict);
 	i = 0;
 	if ((pid = fork()) == 0)
 	{
-		execve(command[0], command, envs);
+		execve(command[0], command, env);
 		path = ft_split(dict->get_value_by_key(dict, "PATH"), ':');
 		while (path && path[i])
 		{
 			tmp = ft_strjoin(path[i], "/");
 //			printf("PATH - %s\n", path[i]);
 			full_command = ft_strjoin(tmp, command[0]);
-			execve(full_command, command, envs);
+			execve(full_command, command, env);
 			free(full_command);
 			free(tmp);
 			i++;
