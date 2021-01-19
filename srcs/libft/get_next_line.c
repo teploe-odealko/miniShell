@@ -56,11 +56,21 @@ int		get_next_line(int fd, char **line)
 {
 	int				l;
 	char			buff[BUFFER_SIZE + 1];
+//	char			buf[2];
 	static char		*save[256];
 	char			*temp;
+//	int				cfd;
 
 	if (fd < 0 || !line || BUFFER_SIZE <= 0 || read(fd, buff, 0) < 0)
 		return (-1);
+//	cfd = dup(fd);
+//	if (read(cfd, buf, 1) == 0)
+//	{
+//		ft_putstr_fd("exit\n", 1);
+//		close(cfd);
+//		exit(0);
+//	}
+//	close(cfd);
 	if (!save[fd])
 		if (!(save[fd] = ft_strdup("")))
 			return (-1);

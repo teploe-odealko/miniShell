@@ -87,4 +87,3 @@ void    ft_exit(char **flags)
 		exit((unsigned char)alp);
 	}
 }
-//exit 9223372036854775807
