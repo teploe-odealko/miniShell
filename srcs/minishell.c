@@ -1,4 +1,6 @@
 #include "minishell.h"
+// Защитить маллоки форки риды
+
 
 void	free_2darray(char **array)
 {
@@ -289,44 +291,11 @@ void	del_front(t_pair **pair)
 	free(tmp);
 }
 
-void	command_decomp(char **command, char **envs, t_dict *dict, t_pair **prths)
+void	run_cmd(char **command, t_pair **prths, t_dict *dict, char **envs)
 {
 	char	**command_split;
-	int		fd;
 	int		i;
-	int		stdout_fd;
-	int		stdin_fd;
 	int		j;
-//	int		pipe_fd[2];
-
-	i = 0;
-	stdout_fd = dup(STDOUT_FILENO);
-	stdin_fd = dup(STDIN_FILENO);
-	while ((*command)[i])
-	{
-		if ((*command)[i] == '>')
-		{
-			fd = cut_off_right_redirect(command, i);
-			dup2(fd, STDOUT_FILENO);
-			close(fd);
-			continue;
-		}
-		if ((*command)[i] == '<')
-		{
-			fd = cut_off_left_redirect(command, i);
-			dup2(fd, STDIN_FILENO);
-			close(fd);
-			continue;
-		}
-//		else if ((*command)[i] == '|')
-//		{
-//			pipe(pipe_fd);
-//			fd = cut_off_left_redirect(command, i);
-//			dup2(fd, STDIN_FILENO);
-//			close(fd);
-//		}
-		i++;
-	}
 	i = 0;
 	command_split = ft_split(*command, ' '); // need to free
 	while (command_split[i])
@@ -354,14 +323,95 @@ void	command_decomp(char **command, char **envs, t_dict *dict, t_pair **prths)
 		i++;
 	}
 	switcher(command_split, envs, dict);
+	free_2darray(command_split);
+}
+
+void	command_decomp(char **command, char **envs, t_dict *dict, t_pair **prths)
+{
+	int		fd;
+	int		i;
+	int		stdout_fd;
+	int		stdin_fd;
+	int		pipe_fd[2];
+
+	i = 0;
+	stdout_fd = dup(STDOUT_FILENO);
+	stdin_fd = dup(STDIN_FILENO);
+	while ((*command)[i])
+	{
+		if ((*command)[i] == '>')
+		{
+			fd = cut_off_right_redirect(command, i);
+			dup2(fd, STDOUT_FILENO);
+			close(fd);
+			continue;
+		}
+		if ((*command)[i] == '<')
+		{
+			fd = cut_off_left_redirect(command, i);
+			dup2(fd, STDIN_FILENO);
+			close(fd);
+			continue;
+		}
+
+		// asd|asd
+		else if ((*command)[i] == '|')
+		{
+			char	*left_com;
+			char	*right_com;
+			int		pid;
+
+			left_com = ft_substr(*command, 0, i);
+			right_com = ft_substr(*command, i + 1, ft_strlen(*command) - i - 1);
+			pipe(pipe_fd);
+
+
+			if ((pid = fork()) == 0)
+			{
+				close(pipe_fd[0]);
+				dup2(pipe_fd[1], STDOUT_FILENO);
+				run_cmd(&left_com, prths, dict, envs);
+				close(pipe_fd[1]);
+				exit(0);
+			}
+			else if (pid > 0)
+			{
+				waitpid(pid, NULL, 0);
+				char	*tmp;
+				close(pipe_fd[1]);
+				dup2(pipe_fd[0], STDIN_FILENO);
+//				run_cmd(&left_com, prths, dict, envs);
+				close(pipe_fd[0]);
+//				exit(0);
+				tmp = *command;
+				*command = right_com;
+				free(tmp);
+				i = 0;
+				continue ;
+			}
+			else
+			{
+				errors_handler("fork error"); // todo
+			}
+			fd = cut_off_left_redirect(command, i);
+			dup2(fd, STDIN_FILENO);
+			close(fd);
+
+		}
+		i++;
+	}
+
+	run_cmd(command, prths, dict, envs);
 //	if (stdout_fd != -1)
 //	{
 	dup2(stdout_fd, STDOUT_FILENO);
 	close(stdout_fd);
 	dup2(stdin_fd, STDIN_FILENO);
 	close(stdin_fd);
+	close(pipe_fd[0]);
+	close(pipe_fd[1]);
 //	}
-	free_2darray(command_split);
+
 }
 
 
