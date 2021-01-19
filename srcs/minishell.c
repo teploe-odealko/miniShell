@@ -5,7 +5,7 @@ void	free_2darray(char **array)
 	int		i;
 
 	i = 0;
-	while (array[i])
+	while (array && array[i])
 	{
 		free(array[i]);
 		i++;
@@ -26,7 +26,7 @@ void 	exec_other(char **command, char **envs, t_dict *dict)
 	{
 		execve(command[0], command, envs);
 		path = ft_split(dict->get_value_by_key(dict, "PATH"), ':');
-		while (path[i])
+		while (path && path[i])
 		{
 			tmp = ft_strjoin(path[i], "/");
 //			printf("PATH - %s\n", path[i]);
@@ -275,7 +275,7 @@ void	del_front(t_pair **pair)
 	free(tmp);
 }
 
-void	command_decomp(char **command, char **envs, t_dict *dict, t_pair *prths)
+void	command_decomp(char **command, char **envs, t_dict *dict, t_pair **prths)
 {
 	char	**command_split;
 	int		fd;
@@ -307,17 +307,17 @@ void	command_decomp(char **command, char **envs, t_dict *dict, t_pair *prths)
 		{
 			if (command_split[i][j] == '"')
 			{
-				replace_vars(&prths->key, dict);
-				prths_back(&(command_split[i]), prths, j);
-				j += ft_strlen(prths->key);
-				del_front(&prths);
+				replace_vars(&(*prths)->key, dict);
+				prths_back(&(command_split[i]), *prths, j);
+				j += ft_strlen((*prths)->key);
+				del_front(prths);
 				continue ;
 			}
 			else if (command_split[i][j] == '\'')
 			{
-				prths_back(&(command_split[i]), prths, j);
-				j += ft_strlen(prths->key);
-				del_front(&prths);
+				prths_back(&(command_split[i]), *prths, j);
+				j += ft_strlen((*prths)->key);
+				del_front(prths);
 				continue ;
 			}
 			j++;
@@ -406,7 +406,7 @@ int main(int argc, char **argv, char **envs)
 	dict = set_env_to_dict(envs);
 	while (1)
 	{
-		ft_printf("minishell-1.2$ ");
+		ft_printf("minishell-1.3$ ");
 		get_next_line(0, &line);
 		prths = NULL;
 		if (ft_strrchr(line, '"') || ft_strrchr(line, '\''))
@@ -423,9 +423,7 @@ int main(int argc, char **argv, char **envs)
 		while (commands[i] != NULL)
 		{
 			replace_vars(&(commands[i]), dict);
-			command_decomp(&commands[i++], envs, dict, prths);
-//			ft_printf("%s\n", commands[i]);
-//			i++;
+			command_decomp(&commands[i++], envs, dict, &prths);
 		}
 		free_2darray(commands);
 		free(line);
