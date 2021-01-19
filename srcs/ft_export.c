@@ -59,9 +59,11 @@ void    ft_export(t_dict *dict, char **flags)
 	char 	**env;
 	char 	*tmpr;
 	t_pair	*pair;
+	int 	plus;
 
 	j = 0;
 	i = 0;
+	plus = 0;
 	pair = dict->pair;
 	if (!*flags)
 	{
@@ -69,9 +71,9 @@ void    ft_export(t_dict *dict, char **flags)
 		env = (char **)malloc(sizeof(char *) * len);
 		while (pair && i < len)
 		{
-			if (pair->value && pair->value[0] == '\0')
+			if (pair->key && pair->value && pair->value[0] == '\0')
 				env[i] = ft_substr(pair->key, 0, ft_strlen(pair->key));
-			else
+			else if (pair->key)
 			{
 				tmp = ft_strjoin(pair->key, "=");
 				tmpr = ft_strjoin(tmp, "\"");
@@ -100,16 +102,26 @@ void    ft_export(t_dict *dict, char **flags)
 			if (flags[j][0] == '_' || (flags[j][0] >= 65 && flags[j][0] <= 90) ||
 					 (flags[j][0] >= 97 && flags[j][0] <= 122)) {
 				while (flags[j][i] && flags[j][i] != '=')
+				{
+					if (flags[j][i] == '+' && flags[j][i + 1] == '=')
+						plus = 1;
 					i++;
-				tmp = ft_substr(flags[j], 0, i);
-				if (!get_value_by_key(dict, tmp))
+				}
+				tmp = ft_substr(flags[j], 0, i - plus);
+				if (i != 0 && !get_value_by_key(dict, tmp))
 					add_new_key(dict, tmp,
 								ft_substr(flags[j] + i + 1, 0,
 										  ft_strlen(flags[j] + i + 1)));
-				else
+				else if (i != 0)
 				{
-					set_value_by_key(dict, tmp, ft_substr(flags[j] + i + 1, 0,
-														  ft_strlen(flags[j] + i + 1)));
+					if (plus)
+					{
+						set_value_by_key(dict, tmp,
+					   ft_strjoin(get_value_by_key(dict, tmp), flags[j] + i + 1));
+					}
+					else if (flags[j][ + i + 1] != '\0')
+						set_value_by_key(dict, tmp, ft_substr(flags[j] + i + 1, 0,
+							ft_strlen(flags[j] + i + 1)));
 					free(tmp);
 				}
 			}

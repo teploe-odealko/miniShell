@@ -20,7 +20,7 @@ void	print_key_and_value(struct s_dict *self, int fd)
 	tmp = self->pair;
 	while (tmp)
 	{
-		if (tmp->value && tmp->value[0] != '\0')
+		if (tmp->key && tmp->value && tmp->value[0] != '\0')
 		{
 			ft_putstr_fd(tmp->key, fd);
 			ft_putstr_fd("=", fd);

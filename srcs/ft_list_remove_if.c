@@ -22,7 +22,7 @@ void	ft_list_remove(t_pair **begin_list, t_pair *temp, t_pair *temp_prev)
 		(temp->key) ? free(temp->key) : NULL;
 		free(temp);
 	}
-	else if (temp->next == NULL)
+	else if (temp && temp->next == NULL)
 	{
 		if (temp_prev == NULL)
 			*begin_list = NULL;
@@ -48,6 +48,7 @@ void	ft_list_remove_if(t_pair **begin_list, void *key_ref, int (*cmp)())
 	char	*key;
 
 	key = key_ref;
+	temp_prev = NULL;
 	if (begin_list == NULL || *begin_list == NULL)
 		return ;
 	temp = *begin_list;

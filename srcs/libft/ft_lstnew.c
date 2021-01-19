@@ -17,7 +17,7 @@ t_pair 	*ft_lstnew(void* key, void *value)
 {
     t_pair *tmp;
 
-	tmp = malloc(sizeof(t_pair));
+	tmp = (t_pair *)malloc(sizeof(t_pair));
 	if (!tmp)
 		return (NULL);
 	tmp->key = key;

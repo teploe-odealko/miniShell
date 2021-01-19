@@ -1,20 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*   ft_signal.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ptycho <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/15 20:48:00 by ptycho            #+#    #+#             */
-/*   Updated: 2021/01/15 20:48:00 by ptycho           ###   ########.fr       */
+/*   Created: 2021/01/19 11:59:00 by ptycho            #+#    #+#             */
+/*   Updated: 2021/01/19 11:59:00 by ptycho           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <unistd.h>
+#include <signal.h>
 
-void    ft_echo(char **flags)
+void	ft_ctrl_c()
 {
-	if (flags && *flags)
-		ft_putstr_fd(*flags, 1);
+
+}
+
+void 	ft_ctrl_d()
+{
+	NULL;
+}
+
+void 	ft_ctrl_sl()
+{
+	NULL;
 }

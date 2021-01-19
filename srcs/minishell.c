@@ -47,10 +47,6 @@ void 	exec_other(char **command, char **envs, t_dict *dict)
 
 void 	switcher(char **command, char **envs, t_dict *dict)
 {
-
-//	t_dict *dict;
-//
-//	dict = set_env_to_dict(envs);
 	if (ft_streq(command[0], "echo"))
 		ft_echo(command + 1);
 	else if (ft_streq(command[0], "cd"))
@@ -334,10 +330,11 @@ void	command_decomp(char **command, char **envs, t_dict *dict, t_pair *prths)
 		dup2(saved_fd, STDOUT_FILENO);
 		close(saved_fd);
 	}
-	i = 0;
-	while (command_split[i])
-		free(command_split[i++]);
-	free(command_split);
+	free_2darray(command_split);
+//	i = 0;
+//	while (command_split[i])
+//		free(command_split[i++]);
+//	free(command_split);
 }
 
 //char *replace_vars(char *s)
@@ -409,7 +406,7 @@ int main(int argc, char **argv, char **envs)
 	dict = set_env_to_dict(envs);
 	while (1)
 	{
-		ft_printf("minishell-1.1$ ");
+		ft_printf("minishell-1.2$ ");
 		get_next_line(0, &line);
 		prths = NULL;
 		if (ft_strrchr(line, '"') || ft_strrchr(line, '\''))
@@ -430,13 +427,7 @@ int main(int argc, char **argv, char **envs)
 //			ft_printf("%s\n", commands[i]);
 //			i++;
 		}
-		i = 0;
-		while (commands[i])
-		{
-			free(commands[i]);
-			i++;
-		}
-		free(commands);
+		free_2darray(commands);
 		free(line);
 	}
 }
