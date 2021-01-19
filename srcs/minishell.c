@@ -416,7 +416,6 @@ t_pair	*parenthesis_handler(char **line)
 	return (prths);
 }
 
-
 int main(int argc, char **argv, char **envs)
 {
 	t_pair 	*prths;
@@ -427,6 +426,8 @@ int main(int argc, char **argv, char **envs)
 
 	if (argc && argv) {}
 	dict = set_env_to_dict(envs);
+	signal(SIGINT, &ft_ctrl_int);
+	signal(SIGQUIT, &ft_ctrl_quit);
 	while (1)
 	{
 		ft_printf("minishell-1.3$ ");

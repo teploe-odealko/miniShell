@@ -24,6 +24,8 @@ typedef struct		s_dict
 	t_pair			*pair;
 }					t_dict;
 
+int 	g_status;
+
 void    ft_echo(char **flags);
 void    ft_cd(t_dict *dict, char **flags);
 void    ft_pwd(t_dict *dict, char **flags);
@@ -42,5 +44,8 @@ void			errors_handler(char *error_desc);
 t_dict			*set_env_to_dict(char **envs);
 
 void			ft_list_remove_if(t_pair **begin_list, void *key_ref, int (*cmp)());
+
+void			ft_ctrl_int(int signal);
+void			ft_ctrl_quit(int signal);
 
 #endif
