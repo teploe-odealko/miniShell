@@ -393,6 +393,15 @@ t_pair	*parenthesis_handler(char **line)
 	return (prths);
 }
 
+void	ft_ctrl_d()
+{
+	char buf[2];
+	if (read(0, &buf, 1) == 0)
+	{
+		ft_putstr_fd("exit", 1);
+		exit(0);
+	}
+}
 
 int main(int argc, char **argv, char **envs)
 {
@@ -406,7 +415,10 @@ int main(int argc, char **argv, char **envs)
 	dict = set_env_to_dict(envs);
 	while (1)
 	{
+		signal(SIGINT, &ft_ctrl_int);
+		signal(SIGQUIT, &ft_ctrl_quit);
 		ft_printf("minishell-1.2$ ");
+		ft_ctrl_d();
 		get_next_line(0, &line);
 		prths = NULL;
 		if (ft_strrchr(line, '"') || ft_strrchr(line, '\''))
