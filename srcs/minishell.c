@@ -144,7 +144,7 @@ void	trim(char **str)
 	free(tmp);
 }
 
-char	*cut_off_word(char **str, int start, int finish)
+char	*cut_off_word(char **str, int start, int finish, char *trim_set)
 {
 	char	*res;
 	char	*tmp;
@@ -161,10 +161,10 @@ char	*cut_off_word(char **str, int start, int finish)
 	ft_strlcat(*str, tmp, start);
 	ft_strlcat(*str, tmp + finish + 1, cutted_len);
 	free(tmp);
-	tmp = ft_strtrim(res, " >");
+	tmp = ft_strtrim(res, trim_set);
 //	trim(&res);
 	tmp2 = *str;
-	*str = ft_strtrim(tmp2, " >$");
+	*str = ft_strtrim(tmp2, trim_set);
 	free(tmp2);
 	free(res);
 	return (tmp);
@@ -186,7 +186,7 @@ int		index_before_spec_char(char *str)
 	return (i);
 }
 
-int 	cut_off_redirect(char **command, int i)
+int 	cut_off_right_redirect(char **command, int i)
 {
 	int		j;
 	int		fd;
@@ -196,15 +196,29 @@ int 	cut_off_redirect(char **command, int i)
 	if ((*command)[j] == '>')
 	{
 		j++;
-		filename = cut_off_word(command, j, j + index_before_spec_char(&((*command)[j])));
+		filename = cut_off_word(command, j, j + index_before_spec_char(&((*command)[j])), " >");
 		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0777); // if -1 returns
 		free(filename);
 	}
 	else
 	{
-		filename = cut_off_word(command, j, j + index_before_spec_char(&((*command)[j])));
+		filename = cut_off_word(command, j, j + index_before_spec_char(&((*command)[j])), " >");
 		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	}
+//	if (fd < 0)
+//		errors_handler(strerror(errno));
+	return (fd);
+}
+
+int 	cut_off_left_redirect(char **command, int i)
+{
+	int		j;
+	int		fd;
+	char	*filename;
+
+	j = i + 1;
+	filename = cut_off_word(command, j, j + index_before_spec_char(&((*command)[j])), " <");
+	fd = open(filename, O_RDONLY);
 //	if (fd < 0)
 //		errors_handler(strerror(errno));
 	return (fd);
@@ -230,7 +244,7 @@ void	replace_vars(char **str, t_dict *dict)
 		if ((*str)[i] == '$')
 		{
 			tmp = ft_strdup(*str);
-			key = cut_off_word(str, i + 1, i + 1 + index_before_spec_char(&((*str)[i + 1])));
+			key = cut_off_word(str, i + 1, i + 1 + index_before_spec_char(&((*str)[i + 1])), " $");
 			value = dict->get_value_by_key(dict, key);
 			// some $var
 			len = (int)(ft_strlen(tmp) - ft_strlen(key) + ft_strlen(value));
@@ -280,22 +294,36 @@ void	command_decomp(char **command, char **envs, t_dict *dict, t_pair **prths)
 	char	**command_split;
 	int		fd;
 	int		i;
-	int		saved_fd;
+	int		stdout_fd;
+	int		stdin_fd;
 	int		j;
+//	int		pipe_fd[2];
 
 	i = 0;
-	saved_fd = -1;
-	saved_fd = dup(STDOUT_FILENO);
+	stdout_fd = dup(STDOUT_FILENO);
+	stdin_fd = dup(STDIN_FILENO);
 	while ((*command)[i])
 	{
 		if ((*command)[i] == '>')
 		{
-			fd = cut_off_redirect(command, i);
+			fd = cut_off_right_redirect(command, i);
 			dup2(fd, STDOUT_FILENO);
 			close(fd);
 			continue;
 		}
-
+		else if ((*command)[i] == '<')
+		{
+			fd = cut_off_left_redirect(command, i);
+			dup2(fd, STDIN_FILENO);
+			close(fd);
+		}
+//		else if ((*command)[i] == '|')
+//		{
+//			pipe(pipe_fd);
+//			fd = cut_off_left_redirect(command, i);
+//			dup2(fd, STDIN_FILENO);
+//			close(fd);
+//		}
 		i++;
 	}
 	i = 0;
@@ -325,22 +353,16 @@ void	command_decomp(char **command, char **envs, t_dict *dict, t_pair **prths)
 		i++;
 	}
 	switcher(command_split, envs, dict);
-	if (saved_fd != -1)
-	{
-		dup2(saved_fd, STDOUT_FILENO);
-		close(saved_fd);
-	}
+//	if (stdout_fd != -1)
+//	{
+	dup2(stdout_fd, STDOUT_FILENO);
+	close(stdout_fd);
+	dup2(stdin_fd, STDIN_FILENO);
+	close(stdin_fd);
+//	}
 	free_2darray(command_split);
-//	i = 0;
-//	while (command_split[i])
-//		free(command_split[i++]);
-//	free(command_split);
 }
 
-//char *replace_vars(char *s)
-//{
-
-//}
 
 char	*cutstr(char *line, int i, int j)
 {
@@ -420,7 +442,7 @@ int main(int argc, char **argv, char **envs)
 		}
 		commands = ft_split(line, ';');
 		i = 0;
-		while (commands[i] != NULL)
+		while (commands && commands[i] != NULL)
 		{
 			replace_vars(&(commands[i]), dict);
 			command_decomp(&commands[i++], envs, dict, &prths);
