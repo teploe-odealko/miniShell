@@ -311,11 +311,12 @@ void	command_decomp(char **command, char **envs, t_dict *dict, t_pair **prths)
 			close(fd);
 			continue;
 		}
-		else if ((*command)[i] == '<')
+		if ((*command)[i] == '<')
 		{
 			fd = cut_off_left_redirect(command, i);
 			dup2(fd, STDIN_FILENO);
 			close(fd);
+			continue;
 		}
 //		else if ((*command)[i] == '|')
 //		{
