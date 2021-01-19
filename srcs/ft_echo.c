@@ -16,5 +16,8 @@
 void    ft_echo(char **flags)
 {
 	if (flags && *flags)
+	{
 		ft_putstr_fd(*flags, 1);
+		ft_putstr_fd("\n", 1);
+	}
 }
