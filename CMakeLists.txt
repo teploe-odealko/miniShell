@@ -52,7 +52,6 @@ add_executable(shell
         srcs/libft/ft_tolower.c
         srcs/libft/ft_toupper.c
         srcs/libft/get_next_line.c
-        srcs/libft/get_next_line_utils.c
         srcs/libft/ft_streq.c
         srcs/libft/ft_max.c
         srcs/libft/libft.h

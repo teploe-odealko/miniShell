@@ -468,26 +468,26 @@ t_pair	*parenthesis_handler(char **line)
 	return (prths);
 }
 
-void	main_loop(t_dict *dict, char **envs)
+void	main_loop(t_dict *dict, char **envs, char *res)
 {
-	char	*line;
+	//char	*line;
 	t_pair 	*prths;
 	char	**commands;
 	int		i;
 
-	ft_putstr_fd("minishell-1.3$ ", 1);
-	get_next_line(0, &line);
+
+	//get_next_line(0, &line);
 	prths = NULL;
-	if (ft_strrchr(line, '"') || ft_strrchr(line, '\''))
+	if (ft_strrchr(res, '"') || ft_strrchr(res, '\''))
 	{
-		prths = parenthesis_handler(&line);
+		prths = parenthesis_handler(&res);
 		if (!prths)
 		{
 			errors_handler("Syntax error");
 			return ;
 		}
 	}
-	commands = ft_split(line, ';');
+	commands = ft_split(res, ';');
 	i = 0;
 	while (commands && commands[i] != NULL)
 	{
@@ -495,14 +495,14 @@ void	main_loop(t_dict *dict, char **envs)
 		command_decomp(&commands[i++], envs, dict, &prths);
 	}
 	free_2darray(commands);
-	free(line);
+	free(res);
 }
 
-int		main(int argc, char **argv, char **envs)
-{
-
-
-	t_dict	*dict;
+int		main(int argc, char **argv, char **envs) {
+	char *res;
+	char *tmp;
+	char buf[2];
+	t_dict *dict;
 
 	g_status = 0;
 	if (argc && argv) {}
@@ -510,5 +510,31 @@ int		main(int argc, char **argv, char **envs)
 	signal(SIGINT, &ft_ctrl_int);
 	signal(SIGQUIT, &ft_ctrl_quit);
 	while (1)
-		main_loop(dict, envs);
+	{
+		ft_putstr_fd("minishell-1.3$ ", 1);
+		buf[1] = 0;
+		res = NULL;
+		while (1)
+		{
+			tmp = res;
+			if (read(0, buf, 1) == 0)
+			{
+				if (!tmp)
+					break;
+				continue;
+			}
+			if (!(res = ft_strjoin((res ? res : ""), (*buf == '\n' ? "" : buf))))
+				critical_errors_handler(strerror(errno));
+			if (tmp)
+				free(tmp);
+			if (*buf == '\n')
+				break;
+		}
+		if (!res)
+		{
+			ft_putstr_fd("exit\n", 1);
+			exit(1);
+		}
+		main_loop(dict, envs, res);
+	}
 }
