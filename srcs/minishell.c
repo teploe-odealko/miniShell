@@ -96,6 +96,8 @@ void 	exec_other(char **command, char **envs, t_dict *dict)
 		if (env)
 			free_2darray(env);
 	}
+	else
+		critical_errors_handler(strerror(errno));
 }
 
 void 	switcher(char **command, char **envs, t_dict *dict)
@@ -205,8 +207,8 @@ int 	cut_off_right_redirect(char **command, int i)
 		filename = cut_off_word(command, j, j + index_before_spec_char(&((*command)[j])), " >");
 		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	}
-//	if (fd < 0)
-//		errors_handler(strerror(errno));
+	if (fd < 0)
+		errors_handler(strerror(errno));
 	free(filename);
 	return (fd);
 }
@@ -221,8 +223,8 @@ int 	cut_off_left_redirect(char **command, int i)
 	filename = cut_off_word(command, j, j + index_before_spec_char(&((*command)[j])), " <");
 	fd = open(filename, O_RDONLY);
 	free(filename);
-//	if (fd < 0)
-//		errors_handler(strerror(errno));
+	if (fd < 0)
+		errors_handler(strerror(errno));
 	return (fd);
 }
 
@@ -339,6 +341,8 @@ void	command_decomp(char **command, char **envs, t_dict *dict, t_pair **prths)
 		if ((*command)[i] == '>')
 		{
 			fd = cut_off_right_redirect(command, i);
+			if (fd < 0)
+				continue;
 			dup2(fd, STDOUT_FILENO);
 			close(fd);
 			continue;
@@ -346,6 +350,8 @@ void	command_decomp(char **command, char **envs, t_dict *dict, t_pair **prths)
 		if ((*command)[i] == '<')
 		{
 			fd = cut_off_left_redirect(command, i);
+			if (fd < 0)
+				continue;
 			dup2(fd, STDIN_FILENO);
 			close(fd);
 			continue;
@@ -387,33 +393,18 @@ void	command_decomp(char **command, char **envs, t_dict *dict, t_pair **prths)
 				continue ;
 			}
 			else
-			{
-				errors_handler("fork error"); // todo
-			}
-			fd = cut_off_left_redirect(command, i);
-			dup2(fd, STDIN_FILENO);
-			close(fd);
-
+				critical_errors_handler(strerror(errno));
 		}
 		i++;
 	}
-
 	run_cmd(command, prths, dict, envs);
-//	if (stdout_fd != -1)
-//	{
 	dup2(stdout_fd, STDOUT_FILENO);
 	close(stdout_fd);
 	dup2(stdin_fd, STDIN_FILENO);
 	close(stdin_fd);
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
-//	}
-
 }
-
-
-
-
 
 void	main_loop(t_dict *dict, char **envs)
 {
@@ -425,7 +416,7 @@ void	main_loop(t_dict *dict, char **envs)
 	ft_printf("minishell-1.3$ ");
 	get_next_line(0, &line);
 	prths = NULL;
-	quotes_handler(line, prths);
+	quotes_handler(&line, &prths);
 	commands = ft_split(line, ';');
 	i = 0;
 	while (commands && commands[i] != NULL)

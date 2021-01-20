@@ -43,7 +43,7 @@ void 			remove_key(struct s_dict *self, char *key);
 t_dict			*new_dict();
 
 void			insert_quotes_content(char **command, t_pair *prths, int i);
-void			quotes_handler(char *line, t_pair *prths);
+void			quotes_handler(char **line, t_pair **prths);
 char			*cut_center(char *line, int i, int j);
 
 void			errors_handler(char *error_desc);

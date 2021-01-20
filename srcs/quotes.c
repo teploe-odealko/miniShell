@@ -18,9 +18,9 @@ void	insert_quotes_content(char **command, t_pair *prths, int i)
 int		single_quotes(int *j, int i, char **line, t_pair **quotes)
 {
 	char	*tmp;
-	*j += 1;
+	(*j)++;
 	while ((*line)[*j] && (*line)[*j] != '\'')
-		*j += 1;
+		(*j)++;
 	if (!(*line)[*j])
 		return (0);
 	ft_lstadd_back(quotes, ft_lstnew(ft_substr(*line, i + 1, *j - i - 1), NULL));
@@ -33,9 +33,9 @@ int		single_quotes(int *j, int i, char **line, t_pair **quotes)
 int		double_quotes(int *j, int i, char **line, t_pair **quotes)
 {
 	char	*tmp;
-	*j += 1;
+	(*j)++;
 	while ((*line)[*j] && (*line)[*j] != '\"')
-		*j += 1;
+		(*j)++;
 	if (!(*line)[*j])
 		return (0);
 	ft_lstadd_back(quotes, ft_lstnew(ft_substr(*line, i + 1, *j - i - 1), NULL));
@@ -71,12 +71,12 @@ t_pair	*extract_quotes(char **line)
 	return (quotes);
 }
 
-void	quotes_handler(char *line, t_pair *prths)
+void	quotes_handler(char **line, t_pair **prths)
 {
-	if (ft_strrchr(line, '"') || ft_strrchr(line, '\''))
+	if (ft_strrchr(*line, '"') || ft_strrchr(*line, '\''))
 	{
-		prths = extract_quotes(&line);
-		if (!prths)
+		*prths = extract_quotes(line);
+		if (!*prths)
 		{
 			errors_handler("Syntax error");
 			return ;
