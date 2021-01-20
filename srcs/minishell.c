@@ -35,11 +35,8 @@ char 	**from_dict(t_dict *dict)
 		else if (pair->key)
 		{
 			tmp = ft_strjoin(pair->key, "=");
-			tmpr = ft_strjoin(tmp, "\"");
-			free(tmp);
-			tmp = ft_strjoin(tmpr, pair->value);
-			free(tmpr);
-			env[i] = ft_strjoin(tmp, "\"");
+			tmpr = ft_strjoin(tmp, pair->value);
+			env[i] = tmpr;
 			free(tmp);
 		}
 		i++;
