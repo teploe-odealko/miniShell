@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include "minishell.h"
 
 void	ft_mtclear(char **m, int n)
 {
@@ -72,11 +71,8 @@ void	swp(char **dest, char const *str, int n, char c)
 		j = ft_wordlen(str, l, c);
 		if (j)
 		{
-			if ((!(dest[i] = (char *)malloc(sizeof(char) * (j + 1)))))
-			{
-				ft_mtclear(dest, n);  // TODO: need replace n by i
-				return ;
-			}
+			if (!(dest[i] = (char *)malloc(sizeof(char) * (j + 1))))
+				critical_errors_handler(strerror(errno));
 			j = 0;
 			while (str[l] != '\0' && str[l] != c)
 				dest[i][j++] = str[l++];
@@ -94,8 +90,8 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	n = linecount(s, c);
-	if ((!(dest = (char**)malloc(sizeof(char *) * (n + 1)))))
-		return (dest);
+	if (!(dest = (char**)malloc(sizeof(char *) * (n + 1))))
+		critical_errors_handler(strerror(errno));
 	dest[n] = NULL;
 	swp(dest, s, n, c);
 	return (dest);

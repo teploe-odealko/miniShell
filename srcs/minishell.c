@@ -135,6 +135,8 @@ char	*insert_char_to_str(char *str, char *c, int i)
 
 	strlen = ft_strlen(str);
 	res = malloc(sizeof(char) * (strlen + 2));
+	if (!res)
+		critical_errors_handler(strerror(errno));
 	ft_bzero(res, (strlen + 2));
 	ft_strlcpy(res, str, i + 1);
 	ft_strlcat(res, c, strlen + 2);
@@ -154,6 +156,8 @@ char	*cut_off_word(char **str, int start, int finish, char *trim_set)
 	res = ft_substr(*str, start, finish - start + 1);
 	tmp = *str;
 	*str = malloc(sizeof(char) * cutted_len);
+	if (!*str)
+		critical_errors_handler(strerror(errno));
 	ft_bzero(*str, cutted_len);
 	ft_strlcat(*str, tmp, start);
 	ft_strlcat(*str, tmp + finish + 1, cutted_len);
@@ -256,6 +260,8 @@ void	replace_vars(char **str, t_dict *dict)
 			len = (int)(ft_strlen(str_dup) - ft_strlen(key) + ft_strlen(value));
 			tmp = *str;
 			*str = malloc(sizeof(char) * len);
+			if (!*str)
+				critical_errors_handler(strerror(errno));
 			free(tmp);
 			ft_bzero(*str, len);
 			ft_strlcat(*str, str_dup, i + 1);
@@ -271,18 +277,7 @@ void	replace_vars(char **str, t_dict *dict)
 	}
 }
 
-void	prths_back(char **command, t_pair *prths, int i)
-{
-	char	*tmp;
 
-	tmp = *command;
-	*command = malloc(sizeof(char) * (ft_strlen(*command) + ft_strlen(prths->key)));
-	ft_bzero(*command, strlen(tmp));
-	ft_strlcat(*command, tmp, i + 1);
-	ft_strlcat(*command, prths->key, ft_strlen(tmp) + ft_strlen(prths->key));
-	ft_strlcat(*command, tmp + i + 1, ft_strlen(tmp) + ft_strlen(prths->key));
-	free(tmp);
-}
 
 void	del_front(t_pair **pair)
 {
@@ -308,14 +303,14 @@ void	run_cmd(char **command, t_pair **prths, t_dict *dict, char **envs)
 			if (command_split[i][j] == '"')
 			{
 				replace_vars(&(*prths)->key, dict);
-				prths_back(&(command_split[i]), *prths, j);
+				insert_quotes_content(&(command_split[i]), *prths, j);
 				j += ft_strlen((*prths)->key);
 				del_front(prths);
 				continue ;
 			}
 			else if (command_split[i][j] == '\'')
 			{
-				prths_back(&(command_split[i]), *prths, j);
+				insert_quotes_content(&(command_split[i]), *prths, j);
 				j += ft_strlen((*prths)->key);
 				del_front(prths);
 				continue ;
@@ -417,56 +412,8 @@ void	command_decomp(char **command, char **envs, t_dict *dict, t_pair **prths)
 }
 
 
-char	*cutstr(char *line, int i, int j)
-{
-	char	*res;
 
-	res = malloc(sizeof(char) * (ft_strlen(line) - (j - i) + 1));
-	ft_strlcpy(res, line, i + 1);
-	ft_strlcat(res, line + j, (ft_strlen(line) - (j - i) + 1));
-	return (res);
-}
 
-t_pair	*parenthesis_handler(char **line)
-{
-	int		i;
-	int		j;
-	t_pair	*prths;
-	char	*tmp;
-
-	i = 0;
-	prths = NULL;
-	while ((*line)[i])
-	{
-		j = i;
-		if ((*line)[i] == '\"')
-		{
-			j++;
-			while ((*line)[j] && (*line)[j] != '\"')
-				j++;
-			if (!(*line)[j])
-				return (NULL);
-			ft_lstadd_back(&prths, ft_lstnew(ft_substr(*line, i + 1, j - i - 1), NULL));
-			tmp = (*line);
-			(*line) = cutstr((*line), i, j);
-			free(tmp);
-		}
-		else if ((*line)[i] == '\'')
-		{
-			j++;
-			while ((*line)[j] && (*line)[j] != '\'')
-				j++;
-			if (!(*line)[j])
-				return (NULL);
-			ft_lstadd_back(&prths, ft_lstnew(ft_substr(*line, i + 1, j - i - 1), NULL));
-			tmp = (*line);
-			(*line) = cutstr((*line), i, j);
-			free(tmp);
-		}
-		i++;
-	}
-	return (prths);
-}
 
 void	main_loop(t_dict *dict, char **envs)
 {
@@ -478,15 +425,7 @@ void	main_loop(t_dict *dict, char **envs)
 	ft_printf("minishell-1.3$ ");
 	get_next_line(0, &line);
 	prths = NULL;
-	if (ft_strrchr(line, '"') || ft_strrchr(line, '\''))
-	{
-		prths = parenthesis_handler(&line);
-		if (!prths)
-		{
-			errors_handler("Syntax error");
-			return ;
-		}
-	}
+	quotes_handler(line, prths);
 	commands = ft_split(line, ';');
 	i = 0;
 	while (commands && commands[i] != NULL)

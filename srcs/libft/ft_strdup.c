@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <stdlib.h>
+#include "minishell.h"
 
 char	*ft_strdup(const char *s1)
 {
@@ -21,7 +20,7 @@ char	*ft_strdup(const char *s1)
 	i = 0;
 	str = (char *)malloc(sizeof(char) * (1 + ft_strlen(s1)));
 	if (!str)
-		return (NULL);
+		critical_errors_handler(strerror(errno));
 	while (s1[i] != '\0')
 	{
 		str[i] = s1[i];

@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "libft.h"
+#include "minishell.h"
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
@@ -26,6 +25,8 @@ char	*ft_strtrim(char const *s1, char const *set)
 	while (ft_strchr(set, *(es1 - 1)) && s1 != es1)
 		es1--;
 	str = (char*)malloc(sizeof(char) * (es1 - s1 + 1));
+	if (!str)
+		critical_errors_handler(strerror(errno));
 	ft_strlcpy(str, s1, sizeof(char) * (es1 - s1 + 1));
 	return (str);
 }

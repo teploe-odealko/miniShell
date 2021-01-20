@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <stdlib.h>
+#include "minishell.h"
 
 void	*ft_calloc(size_t count, size_t size)
 {
@@ -19,7 +18,7 @@ void	*ft_calloc(size_t count, size_t size)
 
 	data = malloc(size * count);
 	if (!data)
-		return (NULL);
+		critical_errors_handler(strerror(errno));
 	ft_bzero(data, size * count);
 	return (data);
 }

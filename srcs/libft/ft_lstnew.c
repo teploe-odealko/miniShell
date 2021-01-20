@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <stdlib.h>
+#include "minishell.h"
 
 t_pair 	*ft_lstnew(void* key, void *value)
 {
@@ -19,7 +18,7 @@ t_pair 	*ft_lstnew(void* key, void *value)
 
 	tmp = (t_pair *)malloc(sizeof(t_pair));
 	if (!tmp)
-		return (NULL);
+		critical_errors_handler(strerror(errno));
 	tmp->key = key;
 	tmp->value = value;
 	tmp->next = NULL;

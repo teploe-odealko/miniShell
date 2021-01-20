@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "libft.h"
+#include "minishell.h"
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
@@ -25,7 +24,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	slen = ft_strlen(s);
 	str = malloc(sizeof(char) * (slen + 1));
 	if (!str)
-		return (NULL);
+		critical_errors_handler(strerror(errno));
 	while (i < slen)
 	{
 		str[i] = (*f)(i, s[i]);

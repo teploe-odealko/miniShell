@@ -69,6 +69,8 @@ void    ft_export(t_dict *dict, char **flags)
 	{
 		len = ft_lstsize(pair);
 		env = (char **)malloc(sizeof(char *) * len);
+		if (!env)
+			critical_errors_handler(strerror(errno));
 		while (pair && i < len)
 		{
 			if (pair->key && pair->value && pair->value[0] == '\0')

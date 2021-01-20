@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "libft.h"
-#include <string.h>
+#include "minishell.h"
 
 char	*ft_adition(unsigned int n, unsigned m, char const *s1, char const *s2)
 {
@@ -24,7 +22,7 @@ char	*ft_adition(unsigned int n, unsigned m, char const *s1, char const *s2)
 	j = 0;
 	str = (char *)malloc(sizeof(char) * (n + m + 1));
 	if (!str)
-		return (NULL);
+		critical_errors_handler(strerror(errno));
 	while (i < n)
 	{
 		str[i] = s1[i];

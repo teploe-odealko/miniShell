@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include "minishell.h"
 
 char	*ft_from(char *str, long long n, int len)
 {
@@ -64,7 +63,7 @@ char	*ft_itoa(long long n)
 	}
 	str = (char*)malloc(sizeof(char) * (len + 1));
 	if (!str)
-		return (NULL);
+		critical_errors_handler(strerror(errno));
 	if (n == (-9223372036854775807 - 1))
 		str = ft_itoa_special(str, "-9223372036854775808");
 	else

@@ -86,6 +86,10 @@ add_executable(shell
         srcs/ft_export.c
         srcs/ft_exit.c
         srcs/ft_signal.c
+        srcs/quotes.c
+        srcs/utils.c
         )
 
 target_compile_options(shell PRIVATE -Wall -Wextra -Werror)
+
+
