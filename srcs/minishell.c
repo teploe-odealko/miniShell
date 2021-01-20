@@ -111,7 +111,7 @@ void 	switcher(char **command, char **envs, t_dict *dict)
 	else if (ft_streq(command[0], "unset"))
 		ft_unset(dict, command + 1);
 	else if (ft_streq(command[0], "env"))
-		ft_env(dict);
+		ft_env(dict, command + 1);
 	else if (ft_streq(command[0], "exit"))
 		ft_exit(command + 1);
 	else
