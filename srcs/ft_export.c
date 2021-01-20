@@ -68,7 +68,7 @@ void    ft_export(t_dict *dict, char **flags)
 	if (!*flags)
 	{
 		len = ft_lstsize(pair);
-		env = (char **)malloc(sizeof(char *) * len);
+		env = (char **)malloc(sizeof(char *) * (len + 1));
 		while (pair && i < len)
 		{
 			if (pair->key && pair->value && pair->value[0] == '\0')
@@ -86,6 +86,7 @@ void    ft_export(t_dict *dict, char **flags)
 			i++;
 			pair = pair->next;
 		}
+		env[i] = NULL;
 		bubble_sort(env, len);
 		i = 0;
 		while (i < len)
