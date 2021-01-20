@@ -48,6 +48,14 @@ char 	**from_dict(t_dict *dict)
 	return (env);
 }
 
+void	check_exit_status(int status)
+{
+	if (WIFEXITED(status))
+		g_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		g_status = WTERMSIG(status) + 128;
+}
+
 void 	exec_other(char **command, char **envs, t_dict *dict)
 {
 	pid_t	pid;
@@ -55,32 +63,33 @@ void 	exec_other(char **command, char **envs, t_dict *dict)
 	char 	*tmp;
 	char	*full_command;
 	int		i;
-	char 	**env;
+	int		status;
 
 	(void)envs;
-	env = from_dict(dict);
+//	env = from_dict(dict); TODO Без ковычек
 	i = 0;
 	if ((pid = fork()) == 0)
 	{
-		execve(command[0], command, env);
+		execve(command[0], command, envs);
 		path = ft_split(dict->get_value_by_key(dict, "PATH"), ':');
 		while (path && path[i])
 		{
 			tmp = ft_strjoin(path[i], "/");
-//			printf("PATH - %s\n", path[i]);
 			full_command = ft_strjoin(tmp, command[0]);
-			execve(full_command, command, env);
+			execve(full_command, command, envs);
 			free(full_command);
 			free(tmp);
 			i++;
 		}
 		free_2darray(path);
-//		if (exec_res == -1)
 		errors_handler("Command not found");
 		exit(0);
 	}
 	else if (pid > 0)
-		waitpid(pid, NULL, 0);
+	{
+		waitpid(pid, &status, 0);
+		check_exit_status(status);
+	}
 }
 
 void 	switcher(char **command, char **envs, t_dict *dict)
@@ -128,71 +137,15 @@ char	*insert_char_to_str(char *str, char *c, int i)
 	return (res);
 }
 
-char	*add_spaces(char *command)
-{
-	int		i;
-
-	i = 0;
-	while (command[i])
-	{
-		if (command[i] == '<' || command[i] == '>' || command[i] == '|')
-		{
-			if (i > 0 && command[i - 1] != ' ')
-			{
-				command = insert_char_to_str(command, " ", i);
-				i++;
-			}
-			if (command[i + 1] != ' ')
-			{
-				command = insert_char_to_str(command, " ", i + 1);
-				i++;
-			}
-		}
-		i++;
-	}
-	return (command);
-}
-
-void	trim(char **str)
-{
-	int		counter;
-	int		i;
-	char	*tmp;
-	int		j;
-
-	counter = 0;
-	i = 0;
-	while ((*str)[i])
-	{
-		if ((*str)[i] == ' ')
-			counter++;
-		i++;
-	}
-	tmp = *str;
-	*str = malloc(sizeof(char) * (strlen(*str) - counter + 1));
-	i = 0;
-	j = 0;
-	while (tmp[i])
-	{
-		if (tmp[i] != ' ')
-			(*str)[j++] = tmp[i];
-		i++;
-	}
-	(*str)[j++] = '\0';
-	free(tmp);
-}
-
 char	*cut_off_word(char **str, int start, int finish, char *trim_set)
 {
 	char	*res;
 	char	*tmp;
 	char	*tmp2;
 	int		cutted_len;
-//	res = malloc(sizeof(char) * (finish - start + 2));
 
 	cutted_len = (int)ft_strlen(*str) - (finish - start) + 1;
 	res = ft_substr(*str, start, finish - start + 1);
-//	res[finish - start] = '\0';
 	tmp = *str;
 	*str = malloc(sizeof(char) * cutted_len);
 	ft_bzero(*str, cutted_len);
@@ -236,7 +189,6 @@ int 	cut_off_right_redirect(char **command, int i)
 		j++;
 		filename = cut_off_word(command, j, j + index_before_spec_char(&((*command)[j])), " >");
 		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0777); // if -1 returns
-		free(filename);
 	}
 	else
 	{
@@ -245,6 +197,7 @@ int 	cut_off_right_redirect(char **command, int i)
 	}
 //	if (fd < 0)
 //		errors_handler(strerror(errno));
+	free(filename);
 	return (fd);
 }
 
@@ -257,15 +210,11 @@ int 	cut_off_left_redirect(char **command, int i)
 	j = i + 1;
 	filename = cut_off_word(command, j, j + index_before_spec_char(&((*command)[j])), " <");
 	fd = open(filename, O_RDONLY);
+	free(filename);
 //	if (fd < 0)
 //		errors_handler(strerror(errno));
 	return (fd);
 }
-
-//void	replace_char_by_str(char *dst, char c, char *str)
-//{
-//
-//}
 
 void	replace_vars(char **str, t_dict *dict)
 {
@@ -276,36 +225,43 @@ void	replace_vars(char **str, t_dict *dict)
 	char	*value;
 
 	i = 0;
-//	trim(str);
 	while ((*str)[i])
 	{
 		if ((*str)[i] == '$')
 		{
+			if ((*str)[i + 1] == ' ' || (*str)[i + 1] == '\0')
+			{
+				i++;
+				continue ;
+			}
 			tmp = ft_strdup(*str);
-			key = cut_off_word(str, i + 1, i + 1 + index_before_spec_char(&((*str)[i + 1])), " $");
-			value = dict->get_value_by_key(dict, key);
-			// some $var
+			if ((*str)[i + 1] == '?')
+			{
+				value = ft_itoa(g_status);
+				key = ft_strdup("?");
+//				i += 2;e
+			}
+			else
+			{
+				key = cut_off_word(str, i + 1, i + 1 + index_before_spec_char(&((*str)[i + 1])), " $");
+				value = ft_strdup(dict->get_value_by_key(dict, key));
+			}
 			len = (int)(ft_strlen(tmp) - ft_strlen(key) + ft_strlen(value));
 			*str = malloc(sizeof(char) * len);
 			ft_bzero(*str, len);
 			ft_strlcat(*str, tmp, i + 1);
 			ft_strlcat(*str, value, len);
 			ft_strlcat(*str, tmp + i + ft_strlen(key) + 1, len);
+			i += ft_strlen(key);
 			free(tmp);
 			free(key);
-			i += ft_strlen(key);
+			free(value);
 			continue ;
 		}
 		i++;
 	}
 }
 
-//void	replace_double_par(t_dict *dict, char **command, t_pair *parths, int i)
-//{
-//	char	*tmp;
-//
-//
-//}
 void	prths_back(char **command, t_pair *prths, int i)
 {
 	char	*tmp;
@@ -316,6 +272,7 @@ void	prths_back(char **command, t_pair *prths, int i)
 	ft_strlcat(*command, tmp, i + 1);
 	ft_strlcat(*command, prths->key, ft_strlen(tmp) + ft_strlen(prths->key));
 	ft_strlcat(*command, tmp + i + 1, ft_strlen(tmp) + ft_strlen(prths->key));
+	free(tmp);
 }
 
 void	del_front(t_pair **pair)
@@ -509,7 +466,8 @@ int main(int argc, char **argv, char **envs)
 	char	**commands;
 	t_dict	*dict;
 	int		i;
-
+//	int		g_status;
+	g_status = 0;
 	if (argc && argv) {}
 	dict = set_env_to_dict(envs);
 	signal(SIGINT, &ft_ctrl_int);

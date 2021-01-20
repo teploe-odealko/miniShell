@@ -11,10 +11,16 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "ft_printf.h"
 
 void	errors_handler(char *error_desc)
 {
-	ft_printf("%s\n", error_desc);
-//	exit(1);
+	ft_putstr_fd(error_desc, 2);
+	ft_putstr_fd("\n", 2);
+}
+
+void	critical_errors_handler(char *error_desc)
+{
+	ft_putstr_fd(error_desc, 2);
+	ft_putstr_fd("\n", 2);
+	exit(1);
 }

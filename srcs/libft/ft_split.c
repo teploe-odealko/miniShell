@@ -74,7 +74,7 @@ void	swp(char **dest, char const *str, int n, char c)
 		{
 			if ((!(dest[i] = (char *)malloc(sizeof(char) * (j + 1)))))
 			{
-				ft_mtclear(dest, n);
+				ft_mtclear(dest, n);  // TODO: need replace n by i
 				return ;
 			}
 			j = 0;
