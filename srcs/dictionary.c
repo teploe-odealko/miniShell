@@ -60,7 +60,7 @@ t_dict			*new_dict()
 	t_dict	*dict;
 
 	if (!(dict = (t_dict*)malloc(sizeof(t_dict))))
-		errors_handler(strerror(errno));
+		critical_errors_handler(strerror(errno));
 	dict->pair = NULL;
 	dict->add_new_key = add_new_key;
 	dict->get_value_by_key = get_value_by_key;

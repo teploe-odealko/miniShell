@@ -12,15 +12,18 @@
 
 #include <stdlib.h>
 #include "libft.h"
+#include "minishell.h"
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char			*str;
 	unsigned int	i;
 
-	str = (char *)malloc(sizeof(char) * (len + 1));
-	if (!str || !s)
+	if (!s)
 		return (NULL);
+	str = (char *)malloc(sizeof(char) * (len + 1));
+	if (!str)
+		critical_errors_handler(strerror(errno));
 	i = 0;
 	while (len-- > 0)
 	{

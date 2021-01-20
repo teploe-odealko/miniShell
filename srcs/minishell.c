@@ -218,6 +218,7 @@ int 	cut_off_left_redirect(char **command, int i)
 
 void	replace_vars(char **str, t_dict *dict)
 {
+	char	*str_dup;
 	char	*tmp;
 	int		i;
 	int		len;
@@ -234,26 +235,28 @@ void	replace_vars(char **str, t_dict *dict)
 				i++;
 				continue ;
 			}
-			tmp = ft_strdup(*str);
+			str_dup = ft_strdup(*str);
 			if ((*str)[i + 1] == '?')
 			{
 				value = ft_itoa(g_status);
 				key = ft_strdup("?");
-//				i += 2;e
 			}
 			else
 			{
+
 				key = cut_off_word(str, i + 1, i + 1 + index_before_spec_char(&((*str)[i + 1])), " $");
 				value = ft_strdup(dict->get_value_by_key(dict, key));
 			}
-			len = (int)(ft_strlen(tmp) - ft_strlen(key) + ft_strlen(value));
+			len = (int)(ft_strlen(str_dup) - ft_strlen(key) + ft_strlen(value));
+			tmp = *str;
 			*str = malloc(sizeof(char) * len);
-			ft_bzero(*str, len);
-			ft_strlcat(*str, tmp, i + 1);
-			ft_strlcat(*str, value, len);
-			ft_strlcat(*str, tmp + i + ft_strlen(key) + 1, len);
-			i += ft_strlen(key);
 			free(tmp);
+			ft_bzero(*str, len);
+			ft_strlcat(*str, str_dup, i + 1);
+			ft_strlcat(*str, value, len);
+			ft_strlcat(*str, str_dup + i + ft_strlen(key) + 1, len);
+			i += ft_strlen(key);
+			free(str_dup);
 			free(key);
 			free(value);
 			continue ;
@@ -459,41 +462,47 @@ t_pair	*parenthesis_handler(char **line)
 	return (prths);
 }
 
-int main(int argc, char **argv, char **envs)
+void	main_loop(t_dict *dict, char **envs)
 {
-	t_pair 	*prths;
 	char	*line;
+	t_pair 	*prths;
 	char	**commands;
-	t_dict	*dict;
 	int		i;
-//	int		g_status;
+
+	ft_printf("minishell-1.3$ ");
+	get_next_line(0, &line);
+	prths = NULL;
+	if (ft_strrchr(line, '"') || ft_strrchr(line, '\''))
+	{
+		prths = parenthesis_handler(&line);
+		if (!prths)
+		{
+			errors_handler("Syntax error");
+			return ;
+		}
+	}
+	commands = ft_split(line, ';');
+	i = 0;
+	while (commands && commands[i] != NULL)
+	{
+		replace_vars(&(commands[i]), dict);
+		command_decomp(&commands[i++], envs, dict, &prths);
+	}
+	free_2darray(commands);
+	free(line);
+}
+
+int		main(int argc, char **argv, char **envs)
+{
+
+
+	t_dict	*dict;
+
 	g_status = 0;
 	if (argc && argv) {}
 	dict = set_env_to_dict(envs);
 	signal(SIGINT, &ft_ctrl_int);
 	signal(SIGQUIT, &ft_ctrl_quit);
 	while (1)
-	{
-		ft_printf("minishell-1.3$ ");
-		get_next_line(0, &line);
-		prths = NULL;
-		if (ft_strrchr(line, '"') || ft_strrchr(line, '\''))
-		{
-			prths = parenthesis_handler(&line);
-			if (!prths)
-			{
-				errors_handler("Syntax error");
-				continue ;
-			}
-		}
-		commands = ft_split(line, ';');
-		i = 0;
-		while (commands && commands[i] != NULL)
-		{
-			replace_vars(&(commands[i]), dict);
-			command_decomp(&commands[i++], envs, dict, &prths);
-		}
-		free_2darray(commands);
-		free(line);
-	}
+		main_loop(dict, envs);
 }
