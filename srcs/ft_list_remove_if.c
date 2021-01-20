@@ -45,9 +45,9 @@ void	ft_list_remove_if(t_pair **begin_list, void *key_ref, int (*cmp)())
 {
 	t_pair	*temp;
 	t_pair	*temp_prev;
-	char	*key;
+//	char	*key;
 
-	key = key_ref;
+//	key = key_ref;
 	temp_prev = NULL;
 	if (begin_list == NULL || *begin_list == NULL)
 		return ;

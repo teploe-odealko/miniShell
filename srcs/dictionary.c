@@ -49,10 +49,7 @@ void			set_value_by_key(struct s_dict *self, char *key, char *value)
 
 void 			remove_key(struct s_dict *self, char *key)
 {
-	t_pair *tmp;
-
-	tmp = self->pair;
-	ft_list_remove_if(&tmp, key, &ft_streq);
+	ft_list_remove_if(&self->pair, key, &ft_streq);
 }
 
 t_dict			*new_dict()
@@ -64,8 +61,6 @@ t_dict			*new_dict()
 	dict->pair = NULL;
 	dict->add_new_key = add_new_key;
 	dict->get_value_by_key = get_value_by_key;
-//	dict->set_value_by_key = ;
-//	dict->add_new_key = ;
-//	dict->remove_key = ;
+	dict->remove_key = remove_key;
 	return (dict);
 }

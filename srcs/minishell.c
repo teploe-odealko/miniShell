@@ -27,7 +27,11 @@ char 	**from_dict(t_dict *dict)
 	i = 0;
 	pair = dict->pair;
 	len = ft_lstsize(pair);
-	env = (char **)malloc(sizeof(char *) * len);
+	if (len < 1)
+		return (NULL);
+	env = (char **)malloc(sizeof(char *) * (len + 1));
+	if (!env)
+		critical_errors_handler(strerror(errno));
 	while (pair && i < len)
 	{
 		if (pair->key && pair->value && pair->value[0] == '\0')
@@ -42,6 +46,7 @@ char 	**from_dict(t_dict *dict)
 		i++;
 		pair = pair->next;
 	}
+	env[i] = NULL;
 	return (env);
 }
 
@@ -61,19 +66,21 @@ void 	exec_other(char **command, char **envs, t_dict *dict)
 	char	*full_command;
 	int		i;
 	int		status;
+	char	**env;
 
 	(void)envs;
-//	env = from_dict(dict); TODO Без ковычек
+//	env = NULL;
+	env = from_dict(dict);
 	i = 0;
 	if ((pid = fork()) == 0)
 	{
-		execve(command[0], command, envs);
+		execve(command[0], command, env);
 		path = ft_split(dict->get_value_by_key(dict, "PATH"), ':');
 		while (path && path[i])
 		{
 			tmp = ft_strjoin(path[i], "/");
 			full_command = ft_strjoin(tmp, command[0]);
-			execve(full_command, command, envs);
+			execve(full_command, command, env);
 			free(full_command);
 			free(tmp);
 			i++;
@@ -86,6 +93,8 @@ void 	exec_other(char **command, char **envs, t_dict *dict)
 	{
 		waitpid(pid, &status, 0);
 		check_exit_status(status);
+		if (env)
+			free_2darray(env);
 	}
 }
 
