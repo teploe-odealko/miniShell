@@ -45,7 +45,7 @@ SRCS            =   ft_substr.c \
                     ft_calloc.c \
                     ft_strdup.c \
                     get_next_line.c \
-                    get_next_line_utils.c
+                    ft_streq.c ft_max.c ft_lstiter.c
 BONUS           =   ft_lstadd_back.c ft_lstadd_front.c ft_lstclear.c \
                         ft_lstdelone.c ft_lstiter.c ft_lstlast.c \
                         ft_lstmap.c ft_lstnew.c ft_lstsize.c \

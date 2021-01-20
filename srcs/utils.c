@@ -12,3 +12,48 @@ char	*cut_center(char *line, int i, int j)
 	return (res);
 }
 
+void	free_2darray(char **array)
+{
+	int		i;
+
+	i = 0;
+	while (array && array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
+
+void	check_exit_status(int status)
+{
+	if (WIFEXITED(status))
+		g_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		g_status = WTERMSIG(status) + 128;
+}
+
+int		index_before_spec_char(char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str[i] == ' ')
+		i++;
+	while (str[i])
+	{
+		if (str[i] == '>' || str[i] == '<' || str[i] == '|' || str[i] == ' ')
+			return (i - 1);
+		i++;
+	}
+	return (i);
+}
+
+void	del_front(t_pair **pair)
+{
+	t_pair	*tmp;
+	tmp = *pair;
+	*pair = (*pair)->next;
+	free(tmp->key);
+	free(tmp);
+}
