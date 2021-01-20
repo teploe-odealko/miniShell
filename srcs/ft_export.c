@@ -131,6 +131,7 @@ void    ft_export(t_dict *dict, char **flags)
 				ft_putstr_fd("export: `", 1);
 				ft_putstr_fd(flags[j], 1);
 				ft_putstr_fd("': not a valid identifier\n", 1);
+				g_status = 1;
 			}
 			j++;
 		}

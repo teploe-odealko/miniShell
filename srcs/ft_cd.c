@@ -54,6 +54,7 @@ void    ft_cd(t_dict *dict, char **flags)
 			ft_putstr_fd(": ", 1);
 			ft_putstr_fd(flags[0], 1);
 			ft_putstr_fd("\n", 1);
+			g_status = 1;
 		}
 	}
 }

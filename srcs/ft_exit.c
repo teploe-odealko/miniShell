@@ -70,7 +70,7 @@ void    ft_exit(char **flags)
 			i++;
 		}
 		ft_putstr_fd("bash: exit: too many arguments\n", 1);
-		errno = 1;
+		g_status = 1;
 	}
 	else if (flags[0] && ft_is_numeric(flags[0]) == 0)
 	{
