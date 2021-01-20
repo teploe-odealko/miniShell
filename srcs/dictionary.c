@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dictionary.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ptycho <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/21 00:11:13 by ptycho            #+#    #+#             */
+/*   Updated: 2021/01/21 00:11:15 by ptycho           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "string.h"
 #include "errno.h"
-//  TODO : реализации функций
 
-void			add_new_key(struct s_dict *self, char *key, char *value)
+void	add_new_key(struct s_dict *self, char *key, char *value)
 {
 	t_pair *new_pair;
 
@@ -15,7 +26,7 @@ void			add_new_key(struct s_dict *self, char *key, char *value)
 	}
 }
 
-char			*get_value_by_key(struct s_dict *self, char *key)
+char	*get_value_by_key(struct s_dict *self, char *key)
 {
 	t_pair *tmp;
 
@@ -29,7 +40,7 @@ char			*get_value_by_key(struct s_dict *self, char *key)
 	return (NULL);
 }
 
-void			set_value_by_key(struct s_dict *self, char *key, char *value)
+void	set_value_by_key(struct s_dict *self, char *key, char *value)
 {
 	t_pair *tmp;
 
@@ -46,12 +57,12 @@ void			set_value_by_key(struct s_dict *self, char *key, char *value)
 	}
 }
 
-void 			remove_key(struct s_dict *self, char *key)
+void	remove_key(struct s_dict *self, char *key)
 {
 	ft_list_remove_if(&self->pair, key, &ft_streq);
 }
 
-t_dict			*new_dict()
+t_dict	*new_dict(void)
 {
 	t_dict	*dict;
 

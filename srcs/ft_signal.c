@@ -19,24 +19,38 @@ void	ft_ctrl_int(int signal)
 	pid_t	pid;
 
 	pid = waitpid(-1, &status, WNOHANG);
-	write(1, "\n", 1);
 	if (signal == SIGINT)
 	{
 		if (pid)
+		{
+			ft_putstr_fd(" \b\b \b\b \b\b", 1);
+			write(1, "\n", 1);
 			ft_putstr_fd("minishell-1.3$ ", 1);
+			g_status = 1;
+		}
+		else
+		{
+			write(1, "\n", 1);
+			g_status = 130;
+		}
 	}
-	g_status = 0;
 }
 
-void 	ft_ctrl_quit(int signal)
+void	ft_ctrl_quit(int signal)
 {
 	int		status;
 	pid_t	pid;
 
 	pid = waitpid(-1, &status, WNOHANG);
 	if (!pid)
+	{
 		ft_putstr_fd("Quit: 3\n", 1);
+		g_status = 131;
+	}
 	else
+	{
 		ft_putstr_fd(" \b\b \b\b", 1);
+		g_status = 0;
+	}
 	(void)signal;
 }

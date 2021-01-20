@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <unistd.h>
 
 void	print_key_and_value(struct s_dict *self, int fd)
 {
@@ -31,7 +30,15 @@ void	print_key_and_value(struct s_dict *self, int fd)
 	}
 }
 
-void    ft_env(t_dict *dict)
+void	ft_env(t_dict *dict, char **flags)
 {
-	print_key_and_value(dict, 1);
+	if (flags[0] != NULL)
+	{
+		ft_putstr_fd("env: ", 1);
+		ft_putstr_fd(flags[0], 1);
+		ft_putstr_fd(": No such file or directory\n", 1);
+		g_status = 127;
+	}
+	else
+		print_key_and_value(dict, 1);
 }

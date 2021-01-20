@@ -13,7 +13,7 @@ void 	switcher(char **command, t_dict *dict)
 	else if (ft_streq(command[0], "unset"))
 		ft_unset(dict, command + 1);
 	else if (ft_streq(command[0], "env"))
-		ft_env(dict);
+		ft_env(dict, command + 1);
 	else if (ft_streq(command[0], "exit"))
 		ft_exit(command + 1);
 	else
@@ -61,6 +61,8 @@ int		main(int argc, char **argv, char **envs) {
 			{
 				if (!tmp)
 					break;
+				else
+					ft_putstr_fd("  \b\b", 1);
 				continue;
 			}
 			if (!(res = ft_strjoin((res ? res : ""), (*buf == '\n' ? "" : buf))))
