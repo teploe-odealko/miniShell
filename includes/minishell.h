@@ -3,7 +3,6 @@
 # include <stdlib.h>
 # include "libft.h"
 # include <fcntl.h>
-#include "ft_printf.h"
 #include <unistd.h>
 #include <stdio.h>
 #include "string.h"
@@ -25,15 +24,15 @@ typedef struct		s_dict
 	t_pair			*pair;
 }					t_dict;
 
-int 	g_status;
+int 				g_status;
 
-void    ft_echo(char **flags);
-void    ft_cd(t_dict *dict, char **flags);
-void    ft_pwd(t_dict *dict, char **flags);
-void    ft_export(t_dict *dict, char **flags);
-void    ft_unset(t_dict *dict, char **flags);
-void    ft_env(t_dict *dict);
-void    ft_exit(char **flags);
+void    		ft_echo(char **flags);
+void    		ft_cd(t_dict *dict, char **flags);
+void    		ft_pwd(t_dict *dict, char **flags);
+void    		ft_export(t_dict *dict, char **flags);
+void    		ft_unset(t_dict *dict, char **flags);
+void    		ft_env(t_dict *dict);
+void    		ft_exit(char **flags);
 
 char			*get_value_by_key(struct s_dict *self, char *key);
 void			set_value_by_key(struct s_dict *self, char *key, char *value);

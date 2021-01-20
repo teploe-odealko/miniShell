@@ -475,7 +475,7 @@ void	main_loop(t_dict *dict, char **envs)
 	char	**commands;
 	int		i;
 
-	ft_printf("minishell-1.3$ ");
+	ft_putstr_fd("minishell-1.3$ ", 1);
 	get_next_line(0, &line);
 	prths = NULL;
 	if (ft_strrchr(line, '"') || ft_strrchr(line, '\''))

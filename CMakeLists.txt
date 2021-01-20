@@ -5,7 +5,6 @@ set(CMAKE_C_STANDARD 11)
 
 include_directories(includes)
 include_directories(srcs/libft)
-include_directories(srcs/printf/includes)
 
 add_executable(shell
         includes/minishell.h
@@ -57,21 +56,6 @@ add_executable(shell
         srcs/libft/ft_streq.c
         srcs/libft/ft_max.c
         srcs/libft/libft.h
-        srcs/printf/includes/ft_printf.h
-        srcs/printf/includes/parser.h
-        srcs/printf/srcs/c_handler.c
-        srcs/printf/srcs/d_handler.c
-        srcs/printf/srcs/ft_printf.c
-        srcs/printf/srcs/p_handler.c
-        srcs/printf/srcs/parcer.c
-        srcs/printf/srcs/per_handler.c
-        srcs/printf/srcs/processor.c
-        srcs/printf/srcs/s_handler.c
-        srcs/printf/srcs/u_handler.c
-        srcs/printf/srcs/utils.c
-        srcs/printf/srcs/utils2.c
-        srcs/printf/srcs/x_handler.c
-        srcs/printf/srcs/xcap_handler.c
         srcs/dictionary.c
         srcs/errors_handler.c
         srcs/minishell.c
