@@ -50,6 +50,51 @@ void 	bubble_sort(char **env, int len)
 	}
 }
 
+//void 	ft_change_value(t_dict *dict, char **flags, char *tmp, int plus)
+//{
+//	int		j;
+//	int 	i;
+//
+//	j = 0;
+//	while (flags && flags[j])
+//	{
+//		if (flags[j][0] == '_' || (flags[j][0] >= 65 && flags[j][0] <= 90) ||
+//			(flags[j][0] >= 97 && flags[j][0] <= 122)) {
+//			while (flags[j][i] && flags[j][i] != '=')
+//			{
+//				if (flags[j][i] == '+' && flags[j][i + 1] == '=')
+//					plus = 1;
+//				i++;
+//			}
+//			tmp = ft_substr(flags[j], 0, i - plus);
+//			if (i != 0 && !get_value_by_key(dict, tmp))
+//				add_new_key(dict, tmp,
+//							ft_substr(flags[j] + i + 1, 0,
+//									  ft_strlen(flags[j] + i + 1)));
+//			else if (i != 0)
+//			{
+//				if (plus)
+//				{
+//					set_value_by_key(dict, tmp,
+//									 ft_strjoin(get_value_by_key(dict, tmp), flags[j] + i + 1));
+//				}
+//				else if (flags[j][ + i + 1] != '\0')
+//					set_value_by_key(dict, tmp, ft_substr(flags[j] + i + 1, 0,
+//														  ft_strlen(flags[j] + i + 1)));
+//				free(tmp);
+//			}
+//		}
+//		else
+//		{
+//			ft_putstr_fd("export: `", 1);
+//			ft_putstr_fd(flags[j], 1);
+//			ft_putstr_fd("': not a valid identifier\n", 1);
+//			g_status = 1;
+//		}
+//		j++;
+//	}
+//}
+
 void    ft_export(t_dict *dict, char **flags)
 {
 	int		i;
@@ -101,7 +146,8 @@ void    ft_export(t_dict *dict, char **flags)
 		while (flags && flags[j])
 		{
 			if (flags[j][0] == '_' || (flags[j][0] >= 65 && flags[j][0] <= 90) ||
-					 (flags[j][0] >= 97 && flags[j][0] <= 122)) {
+					 (flags[j][0] >= 97 && flags[j][0] <= 122))
+			{
 				while (flags[j][i] && flags[j][i] != '=')
 				{
 					if (flags[j][i] == '+' && flags[j][i + 1] == '=')

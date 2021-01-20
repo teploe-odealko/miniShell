@@ -11,18 +11,14 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <sys/errno.h>
 
-extern int errno;
-
-int 	ft_is_numeric(char *flags)
+int		ft_is_numeric(char *flags)
 {
 	int			i;
 	int			len;
 	long long	alp;
 
 	i = 0;
-	alp = 0;
 	len = ft_strlen(flags);
 	if (len > 20)
 		return (0);
@@ -43,34 +39,40 @@ int 	ft_is_numeric(char *flags)
 	return (1);
 }
 
-void    ft_exit(char **flags)
+void	ft_check_numerik(char **flags)
 {
-	int			i;
-	int			j;
-	long long	alp;
+	int		i;
+	int		j;
 
 	i = 0;
+	while (flags[i])
+	{
+		j = 0;
+		while (flags[i][j])
+		{
+			if (!ft_isdigit(flags[i][j]))
+			{
+				ft_putstr_fd("bash: exit: ", 1);
+				ft_putstr_fd(flags[0], 1);
+				ft_putstr_fd(": numeric argument required\n", 1);
+				exit(255);
+			}
+			j++;
+		}
+		i++;
+	}
+	ft_putstr_fd("bash: exit: too many arguments\n", 1);
+	g_status = 1;
+}
+
+void	ft_exit(char **flags)
+{
+	long long	alp;
+
 	ft_putstr_fd("exit\n", 1);
 	if (flags[0] && flags[1])
 	{
-		while (flags[i])
-		{
-			j = 0;
-			while (flags[i][j])
-			{
-				if (!ft_isdigit(flags[i][j]))
-				{
-					ft_putstr_fd("bash: exit: ", 1);
-					ft_putstr_fd(flags[0], 1);
-					ft_putstr_fd(": numeric argument required\n", 1);
-					exit(255);
-				}
-				j++;
-			}
-			i++;
-		}
-		ft_putstr_fd("bash: exit: too many arguments\n", 1);
-		g_status = 1;
+		ft_check_numerik(flags);
 	}
 	else if (flags[0] && ft_is_numeric(flags[0]) == 0)
 	{

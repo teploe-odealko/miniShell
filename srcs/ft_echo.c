@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void    ft_echo(char **flags)
+void	ft_echo(char **flags)
 {
 	if (flags && *flags)
 	{

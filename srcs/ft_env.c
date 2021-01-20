@@ -30,7 +30,7 @@ void	print_key_and_value(struct s_dict *self, int fd)
 	}
 }
 
-void    ft_env(t_dict *dict, char ** flags)
+void	ft_env(t_dict *dict, char **flags)
 {
 	if (flags[0] != NULL)
 	{

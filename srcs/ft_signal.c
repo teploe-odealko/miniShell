@@ -36,7 +36,7 @@ void	ft_ctrl_int(int signal)
 	}
 }
 
-void 	ft_ctrl_quit(int signal)
+void	ft_ctrl_quit(int signal)
 {
 	int		status;
 	pid_t	pid;
