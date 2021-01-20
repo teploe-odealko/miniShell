@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "minishell.h"
 
 int		ft_moving_atoi(char **str)
 {
@@ -46,14 +46,14 @@ t_par	*struct_creator(void)
 {
 	t_par *par;
 
-	if ((par = (t_par*)malloc(sizeof(t_par))))
-	{
-		par->zero = 0;
-		par->minus = 0;
-		par->prec = -1;
-		par->type = 'n';
-		par->wid = -1;
-	}
+	par = (t_par*)malloc(sizeof(t_par));
+	if (!par)
+		critical_errors_handler(strerror(errno));
+	par->zero = 0;
+	par->minus = 0;
+	par->prec = -1;
+	par->type = 'n';
+	par->wid = -1;
 	return (par);
 }
 
