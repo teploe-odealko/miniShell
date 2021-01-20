@@ -87,7 +87,7 @@ void 	exec_other(char **command, char **envs, t_dict *dict)
 		}
 		free_2darray(path);
 		errors_handler("Command not found");
-		exit(0);
+		exit(127);
 	}
 	else if (pid > 0)
 	{
@@ -521,6 +521,8 @@ int		main(int argc, char **argv, char **envs) {
 			{
 				if (!tmp)
 					break;
+				else
+					ft_putstr_fd("  \b\b", 1);
 				continue;
 			}
 			if (!(res = ft_strjoin((res ? res : ""), (*buf == '\n' ? "" : buf))))
