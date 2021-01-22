@@ -73,6 +73,7 @@ add_executable(shell
         srcs/utils.c
         srcs/exec.c
         srcs/dict_utils.c
+        srcs/ft_export_utils.c
         srcs/dollar.c srcs/cut_str.c srcs/command_decomposition.c srcs/run_cmd.c)
 
 target_compile_options(shell PRIVATE -Wall -Wextra -Werror)

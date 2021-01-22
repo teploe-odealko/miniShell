@@ -35,6 +35,10 @@ void    		ft_unset(t_dict *dict, char **flags);
 void    		ft_env(t_dict *dict, char **flags);
 void    		ft_exit(char **flags);
 
+void			bubble_sort(char **env, int len);
+void			ft_print_inv(char **flags, int j);
+
+
 char			*get_value_by_key(struct s_dict *self, char *key);
 void			set_value_by_key(struct s_dict *self, char *key, char *value);
 void			add_new_key(struct s_dict *self, char *key, char *value);
