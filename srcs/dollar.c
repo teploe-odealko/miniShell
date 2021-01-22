@@ -26,6 +26,11 @@ void	replace_vars(char **str, t_dict *dict)
 				key = ft_strdup("?");
 //				i += 1;
 			}
+			else if (ft_isdigit((*str)[i + 1]))
+			{
+				key = cut_off_word(str, i + 1, i + 2 + index_before_spec_char(&((*str)[i + 1])), " $");
+				value = ft_strdup(dict->get_value_by_key(dict, key));
+			}
 			else
 			{
 				key = cut_off_word(str, i + 1, i + 1 + index_before_spec_char(&((*str)[i + 1])), " $");

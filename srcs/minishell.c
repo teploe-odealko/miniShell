@@ -20,6 +20,15 @@ void	switcher(char **command, t_dict *dict)
 		exec_other(command, dict);
 }
 
+int		is_comma_first(char *res)
+{
+	while (*res == ' ')
+		res++;
+	if (*res == ';')
+		return (1);
+	return (0);
+}
+
 void	main_loop(t_dict *dict, char *res)
 {
 	char	**commands;
@@ -32,6 +41,12 @@ void	main_loop(t_dict *dict, char *res)
 		return ;
 	}
 	commands = ft_split(res, ';');
+	if ((!commands[0] && ft_strchr(res, ';')) || is_comma_first(res))
+	{
+		errors_handler("Syntax error");
+		free(res);
+		return ;
+	}
 	i = 0;
 	while (commands && commands[i] != NULL)
 	{
