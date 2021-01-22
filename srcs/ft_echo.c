@@ -14,17 +14,34 @@
 
 void	ft_echo(char **flags)
 {
-	if (flags && *flags)
+	int	i;
+
+	i = 0;
+	if (flags && flags[i])
 	{
 		if (ft_streq(flags[0], "-n"))
 		{
-			if (flags[1] != NULL)
-				ft_putstr_fd(flags[1], 1);
+			i = 1;
+			while (flags[i])
+			{
+				ft_putstr_fd(flags[i], 1);
+				if (flags[i + 1] != NULL)
+					ft_putstr_fd(" ", 1);
+				i++;
+			}
 		}
 		else
 		{
-			ft_putstr_fd(flags[0], 1);
+			while (flags[i])
+			{
+				ft_putstr_fd(flags[0], 1);
+				if (flags[i + 1] != NULL)
+					ft_putstr_fd(" ", 1);
+				i++;
+			}
 			ft_putstr_fd("\n", 1);
 		}
 	}
+	else
+		ft_putstr_fd("\n", 1);
 }
