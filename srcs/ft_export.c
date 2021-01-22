@@ -17,7 +17,9 @@ char	*ft_key_plus_value(t_pair *pair)
 	char	*tmp;
 	char	*tmpr;
 
-	tmp = ft_strjoin(pair->key, "=");
+	tmpr = ft_strjoin("declare -x ", pair->key);
+	tmp = ft_strjoin(tmpr, "=");
+	free(tmpr);
 	tmpr = ft_strjoin(tmp, "\"");
 	free(tmp);
 	tmp = ft_strjoin(tmpr, pair->value);
@@ -50,7 +52,6 @@ void	ft_print_export(t_pair *pair, int len)
 	i = 0;
 	while (i < len)
 	{
-		ft_putstr_fd("declare -x ", 1);
 		ft_putstr_fd(env[i++], 1);
 		ft_putstr_fd("\n", 1);
 	}
