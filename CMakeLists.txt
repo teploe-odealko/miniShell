@@ -73,6 +73,7 @@ add_executable(shell
         srcs/utils.c
         srcs/exec.c
         srcs/dict_utils.c
+        srcs/ft_export_utils.c
         srcs/command_decomposition1.c
         srcs/dollar.c srcs/cut_str.c srcs/command_decomposition.c srcs/run_cmd.c)
 
