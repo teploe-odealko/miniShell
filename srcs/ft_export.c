@@ -95,33 +95,28 @@ void 	bubble_sort(char **env, int len)
 //	}
 //}
 
-void    ft_export(t_dict *dict, char **flags)
-{
-	int		i;
-	int		j;
-	int 	len;
-	char	*tmp;
-	char 	**env;
-	char 	*tmpr;
-	t_pair	*pair;
-	int 	plus;
+void    ft_export(t_dict *dict, char **flags) {
+	int i;
+	int j;
+	int len;
+	char *tmp;
+	char **env;
+	char *tmpr;
+	t_pair *pair;
+	int plus;
 
 	j = 0;
 	i = 0;
 	plus = 0;
 	pair = dict->pair;
-	if (!*flags)
-	{
+	if (!*flags) {
 		len = ft_lstsize(pair);
-		env = (char **)malloc(sizeof(char *) * (len + 1));
-		if (!env)
+		if (!(env = (char **) malloc(sizeof(char *) * (len + 1))))
 			critical_errors_handler(strerror(errno));
-		while (pair && i < len)
-		{
+		while (pair && i < len) {
 			if (pair->key && pair->value && pair->value[0] == '\0')
 				env[i] = ft_substr(pair->key, 0, ft_strlen(pair->key));
-			else if (pair->key)
-			{
+			else if (pair->key) {
 				tmp = ft_strjoin(pair->key, "=");
 				tmpr = ft_strjoin(tmp, "\"");
 				free(tmp);
@@ -136,8 +131,7 @@ void    ft_export(t_dict *dict, char **flags)
 		env[i] = NULL;
 		bubble_sort(env, len);
 		i = 0;
-		while (i < len)
-		{
+		while (i < len) {
 			ft_putstr_fd("declare -x ", 1);
 			ft_putstr_fd(env[i], 1);
 			ft_putstr_fd("\n", 1);
@@ -147,39 +141,48 @@ void    ft_export(t_dict *dict, char **flags)
 	else
 		while (flags && flags[j])
 		{
-			if (flags[j][0] == '_' || (flags[j][0] >= 65 && flags[j][0] <= 90) ||
-					 (flags[j][0] >= 97 && flags[j][0] <= 122))
+			i = 0;
+			while (flags[j][i] && flags[j][i] != '=')
 			{
-				while (flags[j][i] && flags[j][i] != '=')
+				if (flags[j][i] == '+' || flags[j][i] == '_' || (flags[j][i] >= 65 && flags[j][i] <= 90) ||
+					(flags[j][i] >= 97 && flags[j][i] <= 122))
 				{
 					if (flags[j][i] == '+' && flags[j][i + 1] == '=')
 						plus = 1;
-					i++;
-				}
-				tmp = ft_substr(flags[j], 0, i - plus);
-				if (i != 0 && !get_value_by_key(dict, tmp))
-					add_new_key(dict, tmp,
-								ft_substr(flags[j] + i + 1, 0,
-										  ft_strlen(flags[j] + i + 1)));
-				else if (i != 0)
-				{
-					if (plus)
+					else if (flags[j][i] == '+')
 					{
-						set_value_by_key(dict, tmp,
-					   ft_strjoin(get_value_by_key(dict, tmp), flags[j] + i + 1));
+						ft_putstr_fd("export: `", 1);
+						ft_putstr_fd(flags[j], 1);
+						ft_putstr_fd("': not a valid identifier\n", 1);
+						g_status = 1;
 					}
-					else if (flags[j][ + i + 1] != '\0')
-						set_value_by_key(dict, tmp, ft_substr(flags[j] + i + 1, 0,
-							ft_strlen(flags[j] + i + 1)));
-					free(tmp);
 				}
+				else
+				{
+					ft_putstr_fd("export: `", 1);
+					ft_putstr_fd(flags[j], 1);
+					ft_putstr_fd("': not a valid identifier\n", 1);
+					g_status = 1;
+					break ;
+				}
+				i++;
 			}
-			else
+			tmp = ft_substr(flags[j], 0, i - plus);
+			if (i != 0 && !get_value_by_key(dict, tmp))
+				add_new_key(dict, tmp,
+							ft_substr(flags[j] + i + 1, 0,
+									  ft_strlen(flags[j] + i + 1)));
+			else if (i != 0)
 			{
-				ft_putstr_fd("export: `", 1);
-				ft_putstr_fd(flags[j], 1);
-				ft_putstr_fd("': not a valid identifier\n", 1);
-				g_status = 1;
+				if (plus)
+				{
+					set_value_by_key(dict, tmp,
+									 ft_strjoin(get_value_by_key(dict, tmp), flags[j] + i + 1));
+				}
+				else if (flags[j][i + 1] != '\0')
+					set_value_by_key(dict, tmp, ft_substr(flags[j] + i + 1, 0,
+														  ft_strlen(flags[j] + i + 1)));
+				free(tmp);
 			}
 			j++;
 		}
