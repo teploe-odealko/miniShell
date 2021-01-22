@@ -59,9 +59,13 @@ void			switcher(char **command, t_dict *dict);
 void			errors_handler(char *error_desc);
 void			del_front(t_pair **pair);
 void			command_decomp(char **command, t_dict *dict);
+void			pipe_handler_parent(int pid, int *pipe_fd,
+							char **command, char *right_com);
+void			pipe_handler_children(int *pipe_fd, t_dict *dict, char *left_com);
+
 void			critical_errors_handler(char *error_desc);
 t_dict			*set_env_to_dict(char **envs);
-
+void			close_pipe(int *fd, int *fd1);
 void			ft_list_remove_if(t_pair **begin_list, void *key_ref, int (*cmp)());
 
 void			ft_ctrl_int(int signal);

@@ -43,6 +43,7 @@ void	main_loop(t_dict *dict, char *res)
 	commands = ft_split(res, ';');
 	if ((!commands[0] && ft_strchr(res, ';')) || is_comma_first(res))
 	{
+		free_2darray(commands);
 		errors_handler("Syntax error");
 		free(res);
 		return ;

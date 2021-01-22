@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cut_str.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bashleig <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/22 17:41:47 by bashleig          #+#    #+#             */
+/*   Updated: 2021/01/22 17:42:31 by bashleig         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*cut_off_word(char **str, int start, int finish, char *trim_set)
@@ -25,7 +37,7 @@ char	*cut_off_word(char **str, int start, int finish, char *trim_set)
 	return (tmp);
 }
 
-int 	cut_off_right_redirect(char **command, int i)
+int		cut_off_right_redirect(char **command, int i)
 {
 	int		j;
 	int		fd;
@@ -35,12 +47,14 @@ int 	cut_off_right_redirect(char **command, int i)
 	if ((*command)[j] == '>')
 	{
 		j++;
-		filename = cut_off_word(command, j, j + index_before_spec_char(&((*command)[j])), " >");
-		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0777); // if -1 returns
+		filename = cut_off_word(command, j,
+				j + index_before_spec_char(&((*command)[j])), " >");
+		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0777);
 	}
 	else
 	{
-		filename = cut_off_word(command, j, j + index_before_spec_char(&((*command)[j])), " >");
+		filename = cut_off_word(command, j,
+				j + index_before_spec_char(&((*command)[j])), " >");
 		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	}
 	if (fd < 0)
@@ -49,14 +63,15 @@ int 	cut_off_right_redirect(char **command, int i)
 	return (fd);
 }
 
-int 	cut_off_left_redirect(char **command, int i)
+int		cut_off_left_redirect(char **command, int i)
 {
 	int		j;
 	int		fd;
 	char	*filename;
 
 	j = i + 1;
-	filename = cut_off_word(command, j, j + index_before_spec_char(&((*command)[j])), " <");
+	filename = cut_off_word(command, j,
+			j + index_before_spec_char(&((*command)[j])), " <");
 	fd = open(filename, O_RDONLY);
 	free(filename);
 	if (fd < 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dictionary.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptycho <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: bashleig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 00:11:13 by ptycho            #+#    #+#             */
-/*   Updated: 2021/01/21 00:11:15 by ptycho           ###   ########.fr       */
+/*   Updated: 2021/01/22 17:43:31 by bashleig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 void	add_new_key(struct s_dict *self, char *key, char *value)
 {
-	t_pair *new_pair;
+	t_pair	*new_pair;
 
 	if (self && key && value)
 	{

@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dict_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bashleig <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/22 17:42:45 by bashleig          #+#    #+#             */
+/*   Updated: 2021/01/22 17:43:04 by bashleig         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	from_dict_helper(t_pair **pair, char **env, int *i)
 {
-	char 	*tmp;
+	char	*tmp;
 	char	*tmpr;
 
 	if ((*pair)->key && (*pair)->value && (*pair)->value[0] == '\0')
@@ -18,12 +30,12 @@ void	from_dict_helper(t_pair **pair, char **env, int *i)
 	*pair = (*pair)->next;
 }
 
-char 	**from_dict(t_dict *dict)
+char	**from_dict(t_dict *dict)
 {
 	t_pair	*pair;
 	int		len;
 	char	**env;
-	int 	i;
+	int		i;
 
 	i = 0;
 	pair = dict->pair;

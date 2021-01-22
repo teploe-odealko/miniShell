@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bashleig <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/22 18:12:52 by bashleig          #+#    #+#             */
+/*   Updated: 2021/01/22 18:13:01 by bashleig         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	execve_handler(char **command, t_dict *dict, char **env)
 {
-	char 	*tmp;
+	char	*tmp;
 	char	**path;
 	char	*full_command;
 	int		i;
@@ -24,7 +36,7 @@ static void	execve_handler(char **command, t_dict *dict, char **env)
 	exit(0);
 }
 
-void 		exec_other(char **command, t_dict *dict)
+void		exec_other(char **command, t_dict *dict)
 {
 	pid_t	pid;
 	int		status;
