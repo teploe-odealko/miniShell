@@ -54,6 +54,7 @@ void	ft_print_export(t_pair *pair, int len)
 		ft_putstr_fd(env[i++], 1);
 		ft_putstr_fd("\n", 1);
 	}
+	free_2darray(env);
 }
 
 int		ft_valid_env(char **flags, int j, int i, int *plus)
