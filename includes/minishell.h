@@ -44,7 +44,7 @@ t_dict			*new_dict();
 char			**from_dict(t_dict *dict);
 
 void			insert_quotes_content(char **command, t_pair *prths, int i);
-void			quotes_handler(char **line, t_pair **prths);
+int				quotes_handler(char **line, t_pair **quotes);
 char			*cut_center(char *line, int i, int j);
 int				index_before_spec_char(char *str);
 void			replace_vars(char **str, t_dict *dict);

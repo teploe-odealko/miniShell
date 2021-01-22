@@ -24,10 +24,10 @@ void	replace_vars(char **str, t_dict *dict)
 			{
 				value = ft_itoa(g_status);
 				key = ft_strdup("?");
+//				i += 1;
 			}
 			else
 			{
-
 				key = cut_off_word(str, i + 1, i + 1 + index_before_spec_char(&((*str)[i + 1])), " $");
 				value = ft_strdup(dict->get_value_by_key(dict, key));
 			}
@@ -41,7 +41,7 @@ void	replace_vars(char **str, t_dict *dict)
 			ft_strlcat(*str, str_dup, i + 1);
 			ft_strlcat(*str, value, len);
 			ft_strlcat(*str, str_dup + i + ft_strlen(key) + 1, len);
-			i += ft_strlen(key);
+//			i += ft_strlen(key);
 			free(str_dup);
 			free(key);
 			free(value);

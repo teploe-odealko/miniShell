@@ -26,7 +26,11 @@ void	main_loop(t_dict *dict, char *res)
 	int		i;
 
 	dict->quotes = NULL;
-	quotes_handler(&res, &dict->quotes);
+	if (!quotes_handler(&res, &dict->quotes))
+	{
+		free(res);
+		return ;
+	}
 	commands = ft_split(res, ';');
 	i = 0;
 	while (commands && commands[i] != NULL)
