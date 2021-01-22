@@ -42,7 +42,7 @@ int		index_before_spec_char(char *str)
 		i++;
 	while (str[i])
 	{
-		if (str[i] == '>' || str[i] == '<' || str[i] == '|' || str[i] == ' ')
+		if (str[i] == '>' || str[i] == '<' || str[i] == '|' || str[i] == ' ' || str[i] == '$' || str[i] == '\'' || str[i] == '"')
 			return (i - 1);
 		i++;
 	}

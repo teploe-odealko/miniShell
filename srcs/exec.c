@@ -33,7 +33,8 @@ void 		exec_other(char **command, t_dict *dict)
 	env = from_dict(dict);
 	if ((pid = fork()) == 0)
 	{
-		execve_handler(command, dict, env);
+		if (*command)
+			execve_handler(command, dict, env);
 	}
 	else if (pid > 0)
 	{

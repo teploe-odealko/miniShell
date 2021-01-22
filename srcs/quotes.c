@@ -45,6 +45,13 @@ int		double_quotes(int *j, int i, char **line, t_pair **quotes)
 	return (1);
 }
 
+t_pair	*free_quotes(t_pair **quotes)
+{
+	while (*quotes)
+		del_front(quotes);
+	return (NULL);
+}
+
 t_pair	*extract_quotes(char **line)
 {
 	int		i;
@@ -59,27 +66,29 @@ t_pair	*extract_quotes(char **line)
 		if ((*line)[i] == '\"')
 		{
 			if (!double_quotes(&j, i, line, &quotes))
-				return (NULL);
+				return (free_quotes(&quotes));
 		}
 		else if ((*line)[i] == '\'')
 		{
 			if (!single_quotes(&j, i, line, &quotes))
-				return (NULL);
+				return (free_quotes(&quotes));
 		}
 		i++;
 	}
 	return (quotes);
 }
 
-void	quotes_handler(char **line, t_pair **prths)
+int		quotes_handler(char **line, t_pair **quotes)
 {
 	if (ft_strrchr(*line, '"') || ft_strrchr(*line, '\''))
 	{
-		*prths = extract_quotes(line);
-		if (!*prths)
+		*quotes = extract_quotes(line);
+		if (!*quotes)
 		{
+
 			errors_handler("Syntax error");
-			return ;
+			return (0);
 		}
 	}
+	return (1);
 }
