@@ -48,13 +48,13 @@ int		cut_off_right_redirect(char **command, int i)
 	{
 		j++;
 		filename = cut_off_word(command, j,
-				j + index_before_spec_char(&((*command)[j])), " >");
+				j + index_before_spec_char_redirect(&((*command)[j])), " ");
 		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0777);
 	}
 	else
 	{
 		filename = cut_off_word(command, j,
-				j + index_before_spec_char(&((*command)[j])), " >");
+				j + index_before_spec_char_redirect(&((*command)[j])), " ");
 		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	}
 	if (fd < 0)
@@ -71,7 +71,7 @@ int		cut_off_left_redirect(char **command, int i)
 
 	j = i + 1;
 	filename = cut_off_word(command, j,
-			j + index_before_spec_char(&((*command)[j])), " <");
+			j + index_before_spec_char_redirect(&((*command)[j])), " ");
 	fd = open(filename, O_RDONLY);
 	free(filename);
 	if (fd < 0)

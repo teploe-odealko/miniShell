@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_list_remove_if.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptycho <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: bashleig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/05 17:25:08 by ptycho            #+#    #+#             */
-/*   Updated: 2020/08/05 20:04:32 by ptycho           ###   ########.fr       */
+/*   Updated: 2021/01/22 18:14:54 by bashleig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,7 @@ void	ft_list_remove_if(t_pair **begin_list, void *key_ref, int (*cmp)())
 {
 	t_pair	*temp;
 	t_pair	*temp_prev;
-//	char	*key;
 
-//	key = key_ref;
 	temp_prev = NULL;
 	if (begin_list == NULL || *begin_list == NULL)
 		return ;

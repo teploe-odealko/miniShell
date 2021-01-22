@@ -51,14 +51,12 @@ add_executable(shell
         srcs/libft/ft_substr.c
         srcs/libft/ft_tolower.c
         srcs/libft/ft_toupper.c
-        srcs/libft/get_next_line.c
         srcs/libft/ft_streq.c
         srcs/libft/ft_max.c
         srcs/libft/libft.h
         srcs/dictionary.c
         srcs/errors_handler.c
         srcs/minishell.c
-        srcs/parser.c
         srcs/envs.c
         srcs/ft_echo.c
         srcs/ft_cd.c
@@ -75,7 +73,7 @@ add_executable(shell
         srcs/dict_utils.c
         srcs/ft_export_utils.c
         srcs/command_decomposition1.c
-        srcs/dollar.c srcs/cut_str.c srcs/command_decomposition.c srcs/run_cmd.c)
+        srcs/dollar.c srcs/cut_str.c srcs/command_decomposition.c srcs/run_cmd.c srcs/utils2.c)
 
 target_compile_options(shell PRIVATE -Wall -Wextra -Werror)
 

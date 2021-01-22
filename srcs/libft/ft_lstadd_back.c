@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptycho <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: bashleig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/01 19:49:00 by ptycho            #+#    #+#             */
-/*   Updated: 2020/11/01 19:49:00 by ptycho           ###   ########.fr       */
+/*   Updated: 2021/01/22 18:37:15 by bashleig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_lstadd_back(t_pair **lst, t_pair *new)
 {
-    t_pair	*tmp;
+	t_pair	*tmp;
 
 	if (!lst)
 		return ;

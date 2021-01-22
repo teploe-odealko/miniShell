@@ -66,7 +66,7 @@ void			command_decomp(char **command, t_dict *dict);
 void			pipe_handler_parent(int pid, int *pipe_fd,
 							char **command, char *right_com);
 void			pipe_handler_children(int *pipe_fd, t_dict *dict, char *left_com);
-
+t_pair			*free_quotes(t_pair **quotes);
 void			critical_errors_handler(char *error_desc);
 t_dict			*set_env_to_dict(char **envs);
 void			close_pipe(int *fd, int *fd1);
@@ -74,5 +74,5 @@ void			ft_list_remove_if(t_pair **begin_list, void *key_ref, int (*cmp)());
 
 void			ft_ctrl_int(int signal);
 void			ft_ctrl_quit(int signal);
-
+int				index_before_spec_char_redirect(char *str);
 #endif

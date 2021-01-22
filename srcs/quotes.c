@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   quotes.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bashleig <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/22 18:19:01 by bashleig          #+#    #+#             */
+/*   Updated: 2021/01/22 18:31:56 by bashleig         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	insert_quotes_content(char **command, t_pair *prths, int i)
@@ -5,7 +17,8 @@ void	insert_quotes_content(char **command, t_pair *prths, int i)
 	char	*tmp;
 
 	tmp = *command;
-	*command = malloc(sizeof(char) * (ft_strlen(*command) + ft_strlen(prths->key)));
+	*command = malloc(sizeof(char) *
+		(ft_strlen(*command) + ft_strlen(prths->key)));
 	if (!*command)
 		critical_errors_handler(strerror(errno));
 	ft_bzero(*command, strlen(tmp));
@@ -18,12 +31,14 @@ void	insert_quotes_content(char **command, t_pair *prths, int i)
 int		single_quotes(int *j, int i, char **line, t_pair **quotes)
 {
 	char	*tmp;
+
 	(*j)++;
 	while ((*line)[*j] && (*line)[*j] != '\'')
 		(*j)++;
 	if (!(*line)[*j])
 		return (0);
-	ft_lstadd_back(quotes, ft_lstnew(ft_substr(*line, i + 1, *j - i - 1), NULL));
+	ft_lstadd_back(quotes, ft_lstnew(ft_substr(*line, i + 1, *j - i - 1),
+	NULL));
 	tmp = (*line);
 	(*line) = cut_center((*line), i, *j);
 	free(tmp);
@@ -33,23 +48,18 @@ int		single_quotes(int *j, int i, char **line, t_pair **quotes)
 int		double_quotes(int *j, int i, char **line, t_pair **quotes)
 {
 	char	*tmp;
+
 	(*j)++;
 	while ((*line)[*j] && (*line)[*j] != '\"')
 		(*j)++;
 	if (!(*line)[*j])
 		return (0);
-	ft_lstadd_back(quotes, ft_lstnew(ft_substr(*line, i + 1, *j - i - 1), NULL));
+	ft_lstadd_back(quotes, ft_lstnew(ft_substr(*line, i + 1, *j - i - 1),
+						NULL));
 	tmp = (*line);
 	(*line) = cut_center((*line), i, *j);
 	free(tmp);
 	return (1);
-}
-
-t_pair	*free_quotes(t_pair **quotes)
-{
-	while (*quotes)
-		del_front(quotes);
-	return (NULL);
 }
 
 t_pair	*extract_quotes(char **line)
@@ -85,7 +95,6 @@ int		quotes_handler(char **line, t_pair **quotes)
 		*quotes = extract_quotes(line);
 		if (!*quotes)
 		{
-
 			errors_handler("Syntax error");
 			return (0);
 		}

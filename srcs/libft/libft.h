@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptycho <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: bashleig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 21:07:05 by ptycho            #+#    #+#             */
-/*   Updated: 2020/11/01 15:00:02 by ptycho           ###   ########.fr       */
+/*   Updated: 2021/01/22 18:30:54 by bashleig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 
 typedef struct		s_pair
 {
-	char 			*key;
-	char 			*value;
+	char			*key;
+	char			*value;
 	struct s_pair	*next;
 }					t_pair;
 
@@ -59,7 +59,7 @@ void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char *s, int fd);
 void				ft_putendl_fd(char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
-t_pair              *ft_lstnew(void* key, void *value);
+t_pair				*ft_lstnew(void *key, void *value);
 void				ft_lstadd_front(t_pair **lst, t_pair *new);
 int					ft_lstsize(t_pair *lst);
 t_pair				*ft_lstlast(t_pair *lst);

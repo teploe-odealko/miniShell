@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bashleig <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/22 18:18:54 by bashleig          #+#    #+#             */
+/*   Updated: 2021/01/22 18:18:55 by bashleig         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*cut_center(char *line, int i, int j)
@@ -54,6 +66,7 @@ int		index_before_spec_char(char *str)
 void	del_front(t_pair **pair)
 {
 	t_pair	*tmp;
+
 	tmp = *pair;
 	*pair = (*pair)->next;
 	free(tmp->key);

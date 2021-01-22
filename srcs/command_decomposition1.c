@@ -6,7 +6,7 @@
 /*   By: bashleig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 17:21:22 by bashleig          #+#    #+#             */
-/*   Updated: 2021/01/22 17:40:20 by bashleig         ###   ########.fr       */
+/*   Updated: 2021/01/22 18:16:45 by bashleig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,11 @@ void	pipe_handler_children(int *pipe_fd, t_dict *dict, char *left_com)
 	run_cmd(&left_com, &dict->quotes, dict);
 	close(pipe_fd[1]);
 	exit(0);
+}
+
+t_pair	*free_quotes(t_pair **quotes)
+{
+	while (*quotes)
+		del_front(quotes);
+	return (NULL);
 }

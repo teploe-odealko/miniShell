@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptycho <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: bashleig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/01 20:13:00 by ptycho            #+#    #+#             */
-/*   Updated: 2020/11/01 20:13:00 by ptycho           ###   ########.fr       */
+/*   Updated: 2021/01/22 18:36:10 by bashleig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 void	ft_lstclear(t_pair **lst, void (*del)(void *))
 {
-    t_pair *tmp;
-    t_pair *prev_tmp;
+	t_pair *tmp;
+	t_pair *prev_tmp;
 
 	if (lst == NULL || *lst == NULL)
 		return ;

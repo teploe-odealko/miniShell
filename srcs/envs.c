@@ -14,7 +14,7 @@
 #include "string.h"
 #include "errno.h"
 
-static	void	parse_and_add(t_dict *dict, char *env)
+static void	parse_and_add(t_dict *dict, char *env)
 {
 	int		i;
 	char	*key;
@@ -32,7 +32,7 @@ static	void	parse_and_add(t_dict *dict, char *env)
 	errors_handler(strerror(errno));
 }
 
-t_dict	*set_env_to_dict(char **envs)
+t_dict		*set_env_to_dict(char **envs)
 {
 	t_dict	*dict;
 	int		i;

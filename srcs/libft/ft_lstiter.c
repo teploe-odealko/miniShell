@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstiter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ptycho <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: bashleig <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/01 20:50:00 by ptycho            #+#    #+#             */
-/*   Updated: 2020/11/01 20:50:00 by ptycho           ###   ########.fr       */
+/*   Updated: 2021/01/22 18:34:56 by bashleig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	ft_lstiter(t_pair *lst, void (*f)(void *))
 		return ;
 	while (lst)
 	{
-        (*f)(lst->key);
-        (*f)(lst->value);
+		(*f)(lst->key);
+		(*f)(lst->value);
 		lst = lst->next;
 	}
 }
