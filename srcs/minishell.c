@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void 	switcher(char **command, t_dict *dict)
+void	switcher(char **command, t_dict *dict)
 {
 	if (ft_streq(command[0], "echo"))
 		ft_echo(command + 1);
@@ -42,45 +42,55 @@ void	main_loop(t_dict *dict, char *res)
 	free(res);
 }
 
-int		main(int argc, char **argv, char **envs) {
-	char *res;
+char	*get_one_line(void)
+{
+	char *line;
 	char *tmp;
 	char buf[2];
-	t_dict *dict;
+
+	buf[1] = 0;
+	line = NULL;
+	while (1)
+	{
+		tmp = line;
+		if (read(0, buf, 1) == 0)
+		{
+			if (!tmp)
+				break ;
+			else
+				ft_putstr_fd("  \b\b", 1);
+			continue ;
+		}
+		if (!(line = ft_strjoin((line ? line : ""), (*buf == '\n' ? "" : buf))))
+			critical_errors_handler(strerror(errno));
+		if (tmp)
+			free(tmp);
+		if (*buf == '\n')
+			break ;
+	}
+	return (line);
+}
+
+int		main(int argc, char **argv, char **envs)
+{
+	t_dict	*dict;
+	char	*line;
 
 	g_status = 0;
-	if (argc && argv) {}
+	if (argc && argv)
+		NULL;
 	dict = set_env_to_dict(envs);
 	signal(SIGINT, &ft_ctrl_int);
 	signal(SIGQUIT, &ft_ctrl_quit);
 	while (1)
 	{
 		ft_putstr_fd("minishell-1.3$ ", 1);
-		buf[1] = 0;
-		res = NULL;
-		while (1)
-		{
-			tmp = res;
-			if (read(0, buf, 1) == 0)
-			{
-				if (!tmp)
-					break;
-				else
-					ft_putstr_fd("  \b\b", 1);
-				continue;
-			}
-			if (!(res = ft_strjoin((res ? res : ""), (*buf == '\n' ? "" : buf))))
-				critical_errors_handler(strerror(errno));
-			if (tmp)
-				free(tmp);
-			if (*buf == '\n')
-				break;
-		}
-		if (!res)
+		line = get_one_line();
+		if (!line)
 		{
 			ft_putstr_fd("exit\n", 1);
 			exit(1);
 		}
-		main_loop(dict, res);
+		main_loop(dict, line);
 	}
 }

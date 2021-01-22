@@ -12,6 +12,17 @@
 
 #include "minishell.h"
 
+void	ft_put(char **flags, int i)
+{
+	while (flags[i])
+	{
+		ft_putstr_fd(flags[i], 1);
+		if (flags[i + 1] != NULL)
+			ft_putstr_fd(" ", 1);
+		i++;
+	}
+}
+
 void	ft_echo(char **flags)
 {
 	int	i;
@@ -20,25 +31,10 @@ void	ft_echo(char **flags)
 	if (flags && flags[i])
 	{
 		if (ft_streq(flags[0], "-n"))
-		{
-			i = 1;
-			while (flags[i])
-			{
-				ft_putstr_fd(flags[i], 1);
-				if (flags[i + 1] != NULL)
-					ft_putstr_fd(" ", 1);
-				i++;
-			}
-		}
+			ft_put(flags, 1);
 		else
 		{
-			while (flags[i])
-			{
-				ft_putstr_fd(flags[0], 1);
-				if (flags[i + 1] != NULL)
-					ft_putstr_fd(" ", 1);
-				i++;
-			}
+			ft_put(flags, 0);
 			ft_putstr_fd("\n", 1);
 		}
 	}
