@@ -36,36 +36,36 @@ LIB_SRCS = ft_substr.c \
 		ft_isalnum.c \
 		ft_calloc.c \
 		ft_strdup.c \
-		get_next_line.c \
 		ft_lstadd_back.c ft_lstadd_front.c ft_lstclear.c \
 		ft_lstdelone.c ft_lstiter.c ft_lstlast.c \
 		ft_lstmap.c ft_lstnew.c ft_lstsize.c \
 		ft_streq.c ft_max.c ft_lstiter.c
 LIB_OBJ = $(addprefix $(LIBFT_HEADER)/,$(LIB_SRCS:.c=.o))
 
-SRCS = srcs/dictionary.c \
-		srcs/dict_utils.c \
-		srcs/command_decomposition.c \
-		srcs/cut_str.c \
-		srcs/dollar.c \
-		srcs/envs.c \
-		srcs/exec.c \
+SRCS =	srcs/dictionary.c \
 		srcs/errors_handler.c \
-		srcs/ft_cd.c \
-		srcs/ft_echo.c \
-		srcs/ft_env.c \
-		srcs/ft_exit.c \
-		srcs/ft_export.c \
-		srcs/ft_export_utils.c \
-		srcs/ft_list_remove_if.c \
-		srcs/ft_pwd.c \
-		srcs/ft_signal.c \
-		srcs/ft_unset.c \
 		srcs/minishell.c \
+		srcs/envs.c \
+		srcs/ft_echo.c \
+		srcs/ft_cd.c \
+		srcs/ft_pwd.c \
+		srcs/ft_env.c \
+		srcs/ft_list_remove_if.c \
+		srcs/ft_unset.c \
+		srcs/ft_export.c \
+		srcs/ft_exit.c \
+		srcs/ft_signal.c \
 		srcs/quotes.c \
-		srcs/run_cmd.c \
 		srcs/utils.c \
-		srcs/parser.c
+		srcs/exec.c \
+		srcs/dict_utils.c \
+		srcs/ft_export_utils.c \
+		srcs/command_decomposition1.c \
+		srcs/dollar.c \
+		srcs/cut_str.c \
+		srcs/command_decomposition.c \
+		srcs/run_cmd.c \
+		srcs/utils2.c
 
 OBJ = $(SRCS:.c=.o)
 
