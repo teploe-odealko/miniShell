@@ -12,10 +12,13 @@
 
 #include "minishell.h"
 
-void	close_pipe(int *fd, int *fd1)
+void	close_pipe(int *fd, int *pipe_fd)
 {
-	close(fd1[0]);
-	close(fd1[1]);
+	if (pipe_fd[0] != -1 && pipe_fd[1] != -1)
+	{
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+	}
 	close(fd[0]);
 	close(fd[1]);
 }

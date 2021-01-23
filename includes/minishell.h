@@ -81,7 +81,7 @@ t_dict				*set_env_to_dict(char **envs);
 void				close_pipe(int *fd, int *fd1);
 void				ft_list_remove_if(t_pair **begin_list,
 					void *key_ref, int (*cmp)());
-
+int					smcln(char *res);
 void				ft_ctrl_int(int signal);
 void				ft_ctrl_quit(int signal);
 int					index_before_spec_char_redirect(char *str);
