@@ -34,7 +34,9 @@ int		smcln(char *res)
 {
 	while (*res)
 	{
-		if (*res == ';' && *(res + 1) == ';')
+		if ((*res == ';' && *(res + 1) == ';') || (*res == '<' && *(res + 1) == '<')
+		|| (*res == '>' && *(res + 1) == '>' &&
+		*(res + 1) != '\0' && *(res + 2) == '>'))
 			return (1);
 		res++;
 	}
