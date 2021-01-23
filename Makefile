@@ -44,18 +44,27 @@ LIB_SRCS = ft_substr.c \
 LIB_OBJ = $(addprefix $(LIBFT_HEADER)/,$(LIB_SRCS:.c=.o))
 
 SRCS = srcs/dictionary.c \
+		srcs/dict_utils.c \
+		srcs/command_decomposition.c \
+		srcs/cut_str.c \
+		srcs/dollar.c \
 		srcs/envs.c \
+		srcs/exec.c \
 		srcs/errors_handler.c \
 		srcs/ft_cd.c \
 		srcs/ft_echo.c \
 		srcs/ft_env.c \
 		srcs/ft_exit.c \
 		srcs/ft_export.c \
+		srcs/ft_export_utils.c \
 		srcs/ft_list_remove_if.c \
 		srcs/ft_pwd.c \
 		srcs/ft_signal.c \
 		srcs/ft_unset.c \
 		srcs/minishell.c \
+		srcs/quotes.c \
+		srcs/run_cmd.c \
+		srcs/utils.c \
 		srcs/parser.c
 
 OBJ = $(SRCS:.c=.o)
