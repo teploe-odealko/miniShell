@@ -62,10 +62,12 @@ int		pipe_handler(int *pipe_fd, char **command, int i, t_dict *dict)
 	return (0);
 }
 
-void	dup_fd(int *fd)
+void	dup_fd(int *fd, int *pipe_fd)
 {
 	fd[1] = dup(STDOUT_FILENO);
 	fd[0] = dup(STDIN_FILENO);
+	pipe_fd[0] = -1;
+	pipe_fd[1] = -1;
 }
 
 void	command_decomp(char **command, t_dict *dict)
@@ -75,7 +77,7 @@ void	command_decomp(char **command, t_dict *dict)
 	int pipe_fd[2];
 
 	i = 0;
-	dup_fd(fd);
+	dup_fd(fd, pipe_fd);
 	while ((*command)[i] && i < (int)ft_strlen(*command))
 	{
 		if ((*command)[i] == '>' && right_redir_handler(command, i))

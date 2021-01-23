@@ -29,3 +29,14 @@ int		index_before_spec_char_redirect(char *str)
 	}
 	return (i);
 }
+
+int		smcln(char *res)
+{
+	while (*res)
+	{
+		if (*res == ';' && *(res + 1) == ';')
+			return (1);
+		res++;
+	}
+	return (0);
+}

@@ -28,11 +28,11 @@ void	switcher(char **command, t_dict *dict)
 		ft_env(dict, command + 1);
 	else if (ft_streq(command[0], "exit"))
 		ft_exit(command + 1);
-	else
+	else if (*command != NULL)
 		exec_other(command, dict);
 }
 
-int		is_comma_first(char *res)
+int		smcln1(char *res)
 {
 	while (*res == ' ')
 		res++;
@@ -53,7 +53,7 @@ void	main_loop(t_dict *dict, char *res)
 		return ;
 	}
 	commands = ft_split(res, ';');
-	if ((!commands[0] && ft_strchr(res, ';')) || is_comma_first(res))
+	if (smcln(res) || (!commands[0] && ft_strchr(res, ';')) || smcln1(res))
 	{
 		free_2darray(commands);
 		errors_handler("Syntax error");
